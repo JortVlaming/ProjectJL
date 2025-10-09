@@ -1,7 +1,7 @@
 ---
 name: Backend
 about: Taken voor de Backend
-title: ''
+title: "[Backend]"
 labels: Backend
 assignees: JortVlaming
 
