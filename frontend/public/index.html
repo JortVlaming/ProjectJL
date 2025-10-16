@@ -1,44 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>Bun HTML + TS Example</title>
-      <style>
-          body {
-              font-family: system-ui, sans-serif;
-              background: #121212;
-              color: #eee;
-              height: 100vh;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-          }
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #121212;
+            color: #eee;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-          #status {
-              display: flex;
-              align-items: center;
-              gap: 10px;
-              font-size: 1.3rem;
-          }
+        #status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
 
-          #dot {
-              width: 14px;
-              height: 14px;
-              border-radius: 50%;
-              background: gray;
-              transition: background 0.3s ease;
-          }
-      </style>
-  </head>
-  <body>
-  <div id="status">
-      <div id="dot"></div>
-      <span id="text">Connecting...</span>
-  </div>
-    <h1>Hello Bun + TypeScript</h1>
-    <input type="text" id="messageInput" placeholder="Type your message here..." />
-    <button id="sendMessageButton">Send Message</button>
+        #dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: gray;
+            transition: background 0.3s ease;
+        }
+        main {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+        .column {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #log {
+            width: 300px;
+            height: 400px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="column">
+            <div id="status">
+                <div id="dot"></div>
+                <span id="text"></span>
+                <button id="connectButton">Connect</button>
+            </div>
+            <div id="wsConnected">
+                <input type="text" id="messageInput" placeholder="Type your message here..." />
+                <button id="sendMessageButton">Send Message</button>
+
+            </div>
+        </div>
+        <div id="log"></div>
+    </main>
     <script type="module" src="./main.js"></script>
-  </body>
+</body>
+
 </html>
