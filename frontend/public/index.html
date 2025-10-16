@@ -36,11 +36,13 @@
 <body>
     <div id="status">
         <div id="dot"></div>
-        <span id="text">Connecting...</span>
+        <span id="text"></span>
+        <button id="connectButton">Connect</button>
     </div>
-    <h1>Hello Bun + TypeScript</h1>
-    <input type="text" id="messageInput" placeholder="Type your message here..." />
-    <button id="sendMessageButton">Send Message</button>
+    <div id="wsConnected">
+        <input type="text" id="messageInput" placeholder="Type your message here..." />
+        <button id="sendMessageButton">Send Message</button>
+    </div>
     <script type="module" src="./main.js"></script>
 </body>
 
