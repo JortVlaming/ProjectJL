@@ -51,16 +51,34 @@ function createWebSocket() {
         document.body.insertAdjacentHTML("beforeend", `<p>Message from server: ${event.data}</p>`);
     };
 
-    ws.onclose = () => {
+    ws.onclose = (event) => {
         if (!ws) return;
         setStatus("disconnected");
         console.log("WebSocket connection closed");
+
+        if (event.code !== 1000) {
+            console.error("WebSocket closed unexpectedly with code:", event.code);
+            setStatus("error");
+
+            attemptReconnection();
+        }
     };
 
     ws.onerror = (error) => {
         if (!ws) return;
         console.error("WebSocket error:", error);
+        setStatus("error");
     };
+}
+
+function attemptReconnection() {
+    const retryInterval = 5000; // 5 seconds
+    console.log(`Attempting to reconnect in ${retryInterval / 1000} seconds...`);
+    setTimeout(() => {
+        if (!ws || ws.readyState === WebSocket.CLOSED) {
+            createWebSocket();
+        }
+    }, retryInterval);
 }
 
 function sendMessage(message: string) {
@@ -87,7 +105,7 @@ document.getElementById("sendMessageButton")?.addEventListener("click", () => {
 document.getElementById("connectButton")?.addEventListener("click", () => {
     if (document.getElementById("connectButton")!.innerHTML === "disconnect") {
         if (ws) {
-            ws.close();
+            ws.close(1000, "User disconnected");
             ws = null;
         }
         setStatus("disconnected");
