@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && npm run copy-assets",
     "dev": "tsc --watch",
-    "copy-assets": "mkdir -p dist && cp -r public/* dist/",
+    "copy-assets": "mkdir -p dist && cp -R public/* dist/",
     "serve": "python -m http.server 8080 --directory dist",
     "start": "npm run build && npm run serve"
   },
