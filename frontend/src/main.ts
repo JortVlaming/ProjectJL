@@ -1,21 +1,24 @@
-console.log("Hello from TypeScript!");
-document.body.insertAdjacentHTML("beforeend", "<p>TypeScript compiled successfully ✅</p>");
+const WS_URL = "ws://100.93.139.18:3000";
 
 const dot = document.getElementById("dot")!;
 const text = document.getElementById("text")!;
 
 // Change this URL to the actual WebSocket API endpoint you're connecting to
-const ws = new WebSocket("ws://100.93.139.18:3000");
+let ws: WebSocket | null = null;
 
 function setStatus(state: "connected" | "disconnected" | "error" | "connecting") {
     switch (state) {
         case "connected":
             dot.style.background = "limegreen";
             text.textContent = "Connected";
+            document.getElementById("connectButton")!.innerHTML = "disconnect";
+            document.getElementById("wsConnected")!.style.display = "block";
             break;
         case "disconnected":
             dot.style.background = "gray";
             text.textContent = "Disconnected";
+            document.getElementById("connectButton")!.innerHTML = "connect";
+            document.getElementById("wsConnected")!.style.display = "none";
             break;
         case "error":
             dot.style.background = "orange";
@@ -24,33 +27,65 @@ function setStatus(state: "connected" | "disconnected" | "error" | "connecting")
         case "connecting":
             dot.style.background = "yellow";
             text.textContent = "Connecting...";
+            document.getElementById("connectButton")!.innerHTML = "disconnect";
+            document.getElementById("wsConnected")!.style.display = "none";
             break;
     }
 }
 
-setStatus("connecting");
+setStatus("disconnected");
 
-ws.onopen = () => {
-    setStatus("connected");
-    console.log("WebSocket connection established");
-    ws.send("Hello Server!");
-};
+function createWebSocket() {
+    setStatus("connecting");
+    ws = new WebSocket(WS_URL);
+    ws.onopen = () => {
+        if (!ws) return;
+        setStatus("connected");
+        console.log("WebSocket connection established");
+        ws.send("Hello Server!");
+    };
 
-ws.onmessage = (event) => {
-    console.log("Message from server:", event.data);
-    document.getElementById("log")!.insertAdjacentHTML("beforeend", `<p>Message from server: ${event.data}</p>`);
-};
+    ws.onmessage = (event) => {
+        if (!ws) return;
+        console.log("Message from server:", event.data);
+        document.body.insertAdjacentHTML("beforeend", `<p>Message from server: ${event.data}</p>`);
+    };
 
-ws.onclose = () => {
-    setStatus("disconnected");
-    console.log("WebSocket connection closed");
-};
+    ws.onclose = (event) => {
+        if (!ws) return;
+        setStatus("disconnected");
+        console.log("WebSocket connection closed");
 
-ws.onerror = (error) => {
-    console.error("WebSocket error:", error);
-};
+        if (event.code !== 1000) {
+            console.error("WebSocket closed unexpectedly with code:", event.code);
+            setStatus("error");
+
+            attemptReconnection();
+        }
+    };
+
+    ws.onerror = (error) => {
+        if (!ws) return;
+        console.error("WebSocket error:", error);
+        setStatus("error");
+    };
+}
+
+function attemptReconnection() {
+    const retryInterval = 5000; // 5 seconds
+    console.log(`Attempting to reconnect in ${retryInterval / 1000} seconds...`);
+    setTimeout(() => {
+        if (!ws || ws.readyState === WebSocket.CLOSED) {
+            createWebSocket();
+        }
+    }, retryInterval);
+}
 
 function sendMessage(message: string) {
+    if (!ws) {
+        console.error("WebSocket is not initialized.");
+        return;
+    }
     if (ws.readyState === WebSocket.OPEN) {
         ws.send(message);
         console.log("Sent to server:", message);
@@ -65,4 +100,20 @@ document.getElementById("sendMessageButton")?.addEventListener("click", () => {
         sendMessage(input.value);
         input.value = "";
     }
+});
+
+document.getElementById("connectButton")?.addEventListener("click", () => {
+    if (document.getElementById("connectButton")!.innerHTML === "disconnect") {
+        if (ws) {
+            ws.close(1000, "User disconnected");
+            ws = null;
+        }
+        setStatus("disconnected");
+        return;
+    }
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        console.log("WebSocket is already connected.");
+        return;
+    }
+    createWebSocket();
 });
