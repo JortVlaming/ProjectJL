@@ -3,17 +3,14 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.9.3"
-  },
   "scripts": {
     "build": "tsc && npm run copy-assets",
     "dev": "tsc --watch",
-    "copy-assets": "cp -r public/* dist/",
+    "copy-assets": "mkdir -p dist && cp -r public/* dist/",
     "serve": "python3 -m http.server 8080 --directory dist",
     "start": "npm run build && npm run serve"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
   }
 }
