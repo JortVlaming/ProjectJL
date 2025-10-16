@@ -1,0 +1,13 @@
+EXTRA_INCLUDEPATH += /home/gschweitzer/.local/share/qi/toolchains/next/openssl/include
+EXTRA_LIBDIR += /home/gschweitzer/.local/share/qi/toolchains/next/openssl/lib
+QT_CPU_FEATURES.x86_64 = mmx sse sse2
+QT.global_private.enabled_features = alloca_h alloca sse2 dbus dbus-linked gui libudev network posix_fallocate qml-debug reduce_exports reduce_relocations sql testlib widgets xml
+QT.global_private.disabled_features = alloca_malloc_h android-style-assets private_tests release_tools stack-protector-strong system-zlib
+PKG_CONFIG_EXECUTABLE = /usr/bin/pkg-config
+QMAKE_LIBS_DBUS = -ldbus-1
+QMAKE_INCDIR_DBUS = /usr/include/dbus-1.0 /usr/lib/x86_64-linux-gnu/dbus-1.0/include
+QMAKE_LIBS_LIBUDEV = -ludev
+QT_COORD_TYPE = double
+CONFIG += use_gold_linker sse2 sse3 ssse3 sse4_1 sse4_2 avx avx2 compile_examples enable_new_dtags f16c largefile precompile_header
+QT_BUILD_PARTS += tools libs
+QT_HOST_CFLAGS_DBUS += -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include

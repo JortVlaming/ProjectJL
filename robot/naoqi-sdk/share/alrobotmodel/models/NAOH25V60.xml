@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ModulePreference name="aldebaran-robotics.com@Device_Head" xmlns="http://www.aldebaran-robotics.com/ns/ALPreference" schemaLocation="ModulePreference.xsd">
+    <Preference memoryName="RobotConfig/Head/Device/Bluetooth/Version" description="" value="2" type="string" />
+    <Preference memoryName="RobotConfig/Head/Device/Camera/Version" description="" value="10" type="string" />
+    <Preference memoryName="RobotConfig/Head/Device/Ear/Version" description="" value="2" type="string" />
+    <Preference memoryName="RobotConfig/Head/Device/Micro/Version" description="" value="4" type="string" />
+    <Preference memoryName="RobotConfig/Head/Device/TouchBoard/Version" description="" value="2" type="string" />
+    <Preference memoryName="RobotConfig/Head/Device/FaceBoard/Leds/Rotation" description="" value="2" type="string" />
+    <Preference memoryName="RobotConfig/Head/Device/ThermalCooling/Version" description="" value="1" type="string" />
+    <Preference memoryName="RobotConfig/Head/Type" description="" value="Nao" type="string" />
+    <Preference memoryName="RobotConfig/Head/Version" description="" value="6.0.0" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/Foot/Version" description="" value="4" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/Hand/Left/Version" description="" value="8" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/Hand/Right/Version" description="" value="8" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/Legs/Version" description="" value="7" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/LeftArm/Version" description="" value="8" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/RightArm/Version" description="" value="8" type="string" />
+    <Preference memoryName="RobotConfig/Body/Device/Sonar/Version" description="" value="1" type="string" />
+    <Preference memoryName="RobotConfig/Body/MreType" description="" value="2" type="string" />
+    <Preference memoryName="RobotConfig/Body/Version" description="" value="6.0.0" type="string" />
+    <Preference memoryName="RobotConfig/Body/SoftwareRequirement" description="" value="2.7.1" type="string" />
+    <Preference memoryName="RobotConfig/Body/Type" description="" value="Nao" type="string" />
+</ModulePreference>

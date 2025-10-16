@@ -1,0 +1,1805 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Aldebaran 2.8.5.10 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.8.5.10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Aldebaran 2.8.5.10 documentation" href="../../index.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115894784-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115894784-6');
+</script>
+
+<script type="text/javascript" src="https://cloud.aldebaran-robotics.com/static/js/topbar.js"></script>
+<style>
+div#hd::after {
+  
+  
+  content: 'NAOqi 2.8';
+  
+  
+  
+  position: absolute;
+  margin-top: -54px;
+  right: -4px;
+  font-size: 125%;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  }
+</style>
+<script>
+
+$(window).ready(function () {
+
+    //Aldebaran Top bar
+     var barLinks = [];
+     barLinks.push({'name':'Aldebaran Site', 'url':'http://www.aldebaran-robotics.com', 'click':'', 'img':'https://cloud.aldebaran-robotics.com/static/img/aldeb.png'});
+     barLinks.push({'name':'Documentation', 'url':'../../index.html', 'click':"", 'img':''});
+     function ShowBar(name, email, usertype) {
+        var barParams = {
+            'name'    : name,
+            'email'   : email,
+            'usertype': usertype,
+            'loginfct': "FctLogin"
+        }
+        try { InitTopBar(barParams, barLinks); } catch (e) { console.log('Top Bar Init Failed'); }
+    }
+    ShowBar();
+
+    var width_label = 0;
+    $('dl.function-index dt > span').each(function () {
+        $(this).css('width', 'auto');
+        width_label = Math.max(width_label, $(this).width());
+    }).width(width_label + 30);
+    $('.sig-paren').width('auto');
+
+    // first level navigation
+
+    var buttonIds = [".naoqi", "pepper", "nao", "romeo"];
+    for(id in buttonIds){
+        $(id).removeClass("active");
+    }
+    //Aldebaran project
+    if ($('.toctree-l1.current a').text().indexOf("Romeo ")==0){
+        $(".romeo").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Pepper ")==0){
+        $(".pepper").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("NAO ")==0){
+        $(".nao").toggleClass('active');
+    }
+    else if($('.toctree-l1.current a').text().indexOf("NAOqi ")==0){
+        $(".naoqi").toggleClass('active');
+    }
+
+    //qibuild project
+    if ($('.toctree-l1.current a').text().indexOf("Welcome to qiBuild documentation !")==0){
+        $(".beginner").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Advanced qibuild usage")==0){
+        $(".advanced").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Hacking qiBuild")==0){
+        $(".hacking").toggleClass('active');
+    }
+
+    // add "On this page", add cssClasses
+    if($('.yui-g .section h1').length > 0){
+        $('.yui-g .section h1:first').addClass("titleWrapper");
+        $('.yui-g .section h1:first').after($("#on-this-page").html())
+    }
+    else if($('.yui-g .section h2').length > 0){
+        $('.yui-g .section h2:first').addClass("titleWrapper");
+        $('.yui-g .section h2:first').after($("#on-this-page").html())
+    }
+    //remove first element on this page
+    if($("#on-this-page").length > 0){
+        var doms = $(".yui-g .section :first").nextUntil("#toc-list");
+        doms = doms.add($("#toc-list"));
+        doms.wrapAll('<div class="iNavWrapper"></div>');
+        $("#toc-list ul li a:first").remove()
+        $("#toc-list ul:first").replaceWith($("#toc-list ul li").html())
+    }
+    $("#toc-list").hide();
+    $("#otp-link").click(function(){
+        $("#toc-list").slideToggle();
+        if($("h2#otp-link").hasClass("change-before")){
+            $("h2#otp-link").removeClass("change-before")
+        }
+        else{
+            $("h2#otp-link").addClass("change-before")
+        }
+    });
+
+    if($("a.current.reference.internal").length>0){
+        var left = $("a.current.reference.internal").position().left-1;
+        var width = $("a.current.reference.internal").width();
+        var offset = 51;
+        var sidebarWidth = 339;
+        var right = sidebarWidth - (left + width + offset);
+        if($("a.current.reference.internal").height() <= 15){
+            $("a.current.reference.internal").css("white-space","nowrap");
+            $("a.current.reference.internal").css({"backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        else{
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+            left = $("a.current.reference.internal").position().left-1;
+            width = $("a.current.reference.internal").width();
+            right = sidebarWidth - (left + width + offset);
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        $("a.current.reference.internal").parent().css("list-style-type","none");
+    }
+
+    //back to top
+    var offset = 300,
+    //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
+    offset_opacity = 1200,
+    //duration of the top scrolling animation (in ms)
+    scroll_top_duration = 700;
+    //grab the "back to top" link
+    var back_to_top = $('.cd-top');
+
+    //hide or show the "back to top" link
+    $(window).scroll(function(){
+        //back to top button
+        ( $(this).scrollTop() > offset ) ? back_to_top.addClass('cd-is-visible') : back_to_top.removeClass('cd-is-visible cd-fade-out');
+        if( $(this).scrollTop() > offset_opacity ) {
+            back_to_top.addClass('cd-fade-out');
+        }
+    });
+
+    //smooth scroll to top
+    back_to_top.click(function(event){
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0 ,
+        }, scroll_top_duration
+        );
+    });
+    //add show source button
+
+    //replace "go" with "search"
+    $("#searchbox form input[type=submit]").val("Search")
+
+    //trigger click on version triangle to jump to whats new
+    $("#hd").click(function(e){if(e.pageX >= this.offsetWidth && e.pageY<120){$(".whatsnew")[0].click()}})
+})
+
+</script>
+
+
+  </head>
+  <body role="document">
+
+    <div class="document">
+  <div id="custom-doc" class="yui-t3">
+    <div id="hd">
+      
+      <h1><a href="../../index.html">SoftBank Robotics documentation</a>
+      
+      
+      <span><a class="whatsnew" href="../../news/index.html" >
+      
+          What's new in NAOqi 2.8?
+      
+      </a></span>
+      
+      </h1>
+      <div id="global-nav">
+        
+        <a class="naoqi" title="NAOqi Developer guide" href="../../index_dev_guide.html">NAOqi</a>
+        <a class="pepper" title="Pepper documentation" href="../../home_pepper.html">Pepper</a>
+        <a class="nao" title="NAO documentation" href="../../home_nao.html">NAO</a>
+        <a class="romeo" title="Romeo Documentation" href="../../home_romeo.html">Romeo</a>
+        
+        
+        
+        <div class="nav">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script></div>
+      </div>
+
+    </div>
+    <main class="cd-container">
+        <div id="bd">
+          <div id="yui-main">
+            <div class="yui-b">
+              <div class="yui-g" id="dev-libqi-contents">
+                
+  <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">qi Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#api-reference">API Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/index.html">API References</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/cpp/index.html">C++ qi API Reference</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api/cpp/base/index.html">C++ qi base API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/actor.html">qi::Strand and qi::Actor</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/actor.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/actor.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/actor.html#strand-usage">Strand Usage</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/actor.html#actor-usage">Actor Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/actor.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/actor.html#qi-strand-class-reference">qi::Strand Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/actor.html#qi-actor-class-reference">qi::Actor Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/actor.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/application.html">qi::Application</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/application.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/application.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/application.html#usage-example">Usage Example</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/application.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/application.html#qi-application-class-reference">qi::Application Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/application.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/application.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/application.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/application.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/application.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/atomic.html">qi::Atomic</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/atomic.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/atomic.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/atomic.html#atomic-operations">Atomic Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/atomic.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/atomic.html#qi-atomic-class-reference">qi::Atomic Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/atomic.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/atomic.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/atomic.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/atomic.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/atomic.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/atomic.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/clock.html">qi clocks</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#concepts">Concepts</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#clock-properties">Clock properties</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#clocks">Clocks</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#example">Example</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#rationale">Rationale</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/clock.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/clock.html#qi-steadyclock-class-reference">qi::SteadyClock Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#enumerations">Enumerations</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/clock.html#qi-clock-class-reference">qi::Clock Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#enumerations">Enumerations</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/clock.html#qi-systemclock-class-reference">qi::SystemClock Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/clock.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/clock.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/eventloop.html">qi::EventLoop</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/eventloop.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/eventloop.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/eventloop.html#good-use-of-a-threadpool">Good use of a threadpool</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/eventloop.html#blocking-threads">Blocking threads</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/eventloop.html#threadpool-monitoring">Threadpool Monitoring</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/eventloop.html#customizing-the-threadpool-behavior">Customizing the Threadpool Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/eventloop.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/eventloop.html#qi-eventloop-class-reference">qi::EventLoop Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/eventloop.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/eventloop.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/eventloop.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/eventloop.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/eventloop.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/future.html">qi::Promise, qi::Future</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/future.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/future.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#qi-future">qi::Future</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#the-different-states-of-a-future">The different states of a Future</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#getting-the-state-and-waiting-for-a-future">Getting the state and waiting for a Future</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#future-notification">Future notification</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#future-callback-synchronousness">Future callback synchronousness</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#future-cancellation">Future cancellation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#qi-promise">qi::Promise</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#supporting-cancellation">Supporting cancellation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#controlling-callback-execution">Controlling callback execution</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#qi-futuresync">qi::FutureSync</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#returning-a-futuresync">Returning a FutureSync</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#calling-a-function-returning-a-futuresync">Calling a function returning a FutureSync</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#implementing-an-asynchronous-function">Implementing an asynchronous function</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#simple-implementation">Simple implementation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#cancellation-support">Cancellation support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/future.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#qi-future-class-reference">qi::Future Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#qi-promise-class-reference">qi::Promise Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/future.html#qi-futuresync-class-reference">qi::FutureSync Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/future.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/futuregroup.html">qi::Future groups</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/futuregroup.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/futuregroup.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/futuregroup.html#rationale">Rationale</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/futuregroup.html#qi-scopedfuturegroup">qi::ScopedFutureGroup</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/futuregroup.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/futuregroup.html#qi-scopedfuturegroup-class-reference">qi::ScopedFutureGroup Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/futuregroup.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/futuregroup.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/futuregroup.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/futuregroup.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/futuregroup.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/iocolor.html">qi::IOColor</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/iocolor.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/iocolor.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/log.html">qi::log</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/log.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/log.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/log.html#encoding">Encoding</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/log.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/log.html#macro">Macro</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/log.html#deprecated">Deprecated</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/macro.html">qi helper macros</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/macro.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/macro.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/os.html">qi::os</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/os.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/os.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/os.html#qi-os-namespace-reference">qi::os Namespace Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/os.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/os.html#inner-definitions">Inner Definitions</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/os.html#classes">Classes</a></li>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/os.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/os.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/os.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/path.html">qi::path namespace</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/path.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/path.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/path.html#qi-path-class-reference">qi::Path Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/path.html#qi-path-namespace-reference">qi::path Namespace Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#inner-definitions">Inner Definitions</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/path.html#namespaces">Namespaces</a></li>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/path.html#classes">Classes</a></li>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/path.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/path.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/periodictask.html">qi::PeriodicTask</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/periodictask.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/periodictask.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/periodictask.html#using-a-periodic-task">Using a periodic task</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/periodictask.html#about-scheduling-and-callback-time-compensation">About scheduling and callback time compensation</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/periodictask.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/periodictask.html#qi-periodictask-class-reference">qi::PeriodicTask Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/periodictask.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/periodictask.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/periodictask.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/periodictask.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/periodictask.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/preproc.html">qi preprocessor macros</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/preproc.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/preproc.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/preproc.html#variadic-templates">Variadic Templates</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/preproc.html#overview">Overview</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/preproc.html#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/preproc.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/stats.html">qi::stats namespace</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/stats.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/stats.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/stats.html#qi-minmaxsum-class-reference">qi::MinMaxSum Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/stats.html#qi-methodstatistics-class-reference">qi::MethodStatistics Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/stats.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/trackable.html">qi::Trackable</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/trackable.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/trackable.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/trackable.html#rationale">Rationale</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/trackable.html#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/trackable.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/trackable.html#qi-trackable-class-reference">qi::Trackable Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/trackable.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/trackable.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/trackable.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/trackable.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/translator.html">qi::Translator</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/translator.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/translator.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/translator.html#qi-translator-class-reference">qi::Translator Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/translator.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/translator.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/translator.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/translator.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/types.html">Types</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/types.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/types.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/base/version.html">qi::Version</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/version.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/base/version.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/version.html#qi-version-version-class-reference">qi::version::Version Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/base/version.html#qi-version-namespace-reference">qi::version Namespace Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#inner-definitions">Inner Definitions</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/version.html#classes">Classes</a></li>
+<li class="toctree-l10"><a class="reference internal" href="api/cpp/base/version.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/base/version.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/cpp/type/index.html">C++ qi type API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/anyvalue.html">qi::AnyValue</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyvalue.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyvalue.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyvalue.html#storing-and-retrieving-a-value">Storing and retrieving a value</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyvalue.html#using-the-value-with-standard-types">Using the value with standard types</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyvalue.html#using-the-value-with-registered-types">Using the value with registered types</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyvalue.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyvalue.html#qi-anyvalue-class-reference">qi::AnyValue Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyvalue.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyvalue.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyvalue.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyvalue.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyvalue.html#functions-documentation">Functions Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/anyfunction.html">qi::AnyFunction</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyfunction.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyfunction.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyfunction.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyfunction.html#qi-anyfunction-class-reference">qi::AnyFunction Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyfunction.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyfunction.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyfunction.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyfunction.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyfunction.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/anyobject.html">qi::Object</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyobject.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyobject.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyobject.html#qi-anyobject">qi::AnyObject</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyobject.html#signal-connection">Signal Connection</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyobject.html#qi-object-t">qi::Object&lt;T&gt;</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyobject.html#passing-an-object-as-argument">Passing an object as argument</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anyobject.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anyobject.html#qi-object-class-reference">qi::Object Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyobject.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyobject.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyobject.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyobject.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyobject.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anyobject.html#functions-documentation">Functions Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/anymodule.html">qi::AnyModule</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anymodule.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anymodule.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#creating-a-c-module">Creating a C++ Module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#using-a-module-in-c">Using a Module in C++</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#module-factory-advanced">Module Factory (advanced)</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#finding-modules-advanced">Finding Modules (advanced)</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/anymodule.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#qi-moduleinfo-class-reference">qi::ModuleInfo Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#members-documentation">Members Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#qi-modulebuilder-class-reference">qi::ModuleBuilder Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/anymodule.html#qi-anymodule-class-reference">qi::AnyModule Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/anymodule.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/buffer.html">qi::Buffer, qi::BufferReader</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/buffer.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/buffer.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/buffer.html#qi-buffer-class-reference">qi::Buffer Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/buffer.html#qi-bufferreader-class-reference">qi::BufferReader Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/buffer.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html">qi::DynamicObjectBuilder</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#qi-dynamicobjectbuilder-class-reference">qi::DynamicObjectBuilder Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/dynamicobjectbuilder.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/metaobject.html">qi::MetaObject, qi::MetaMethod, qi::MetaSignal, qi::MetaProperty</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/metaobject.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/metaobject.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/metaobject.html#qi-metaobject-class-reference">qi::MetaObject Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/metaobject.html#qi-metamethod-class-reference">qi::MetaMethod Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/metaobject.html#qi-metasignal-class-reference">qi::MetaSignal Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/metaobject.html#qi-metaproperty-class-reference">qi::MetaProperty Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/metaobject.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html">qi::ObjectTypeBuilder</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#qi-objecttypebuilder-class-reference">qi::ObjectTypeBuilder Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/objecttypebuilder.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/property.html">qi::Property</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/property.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/property.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/property.html#simple-usage">Simple usage</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/property.html#signals">Signals</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/property.html#custom-setters-and-getters">Custom setters and getters</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/property.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/property.html#qi-property-class-reference">qi::Property Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/property.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/property.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/property.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/property.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/property.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/signal.html">qi::Signal</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/signal.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/signal.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#template-arguments">Template arguments</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#connection-to-a-signal">Connection to a signal</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#triggering-the-signal">Triggering the signal</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#signal-callback-type">Signal callback type</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#signal-lazy-enabling">Signal lazy enabling</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#example">Example</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#overriding-signal-triggering-behavior-advanced">Overriding signal triggering behavior (advanced)</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/signal.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#qi-signal-class-reference">qi::Signal Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#public-members">Public Members</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#types">Types</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#functions-documentation">Functions Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signal.html#qi-signalsubscriber-class-reference">qi::SignalSubscriber Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#public-signals">Public Signals</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#signals-documentation">Signals Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signal.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/type/signature.html">qi::Signature</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/signature.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/type/signature.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/type/signature.html#qi-signature-class-reference">qi::Signature Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signature.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signature.html#enumerations">Enumerations</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signature.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signature.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signature.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/type/signature.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/cpp/messaging/index.html">C++ qi messaging API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/messaging/applicationsession.html">qi::ApplicationSession</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#detailed-description">Detailed Description</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#usage-example">Usage Example</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#qi-applicationsession-class-reference">qi::ApplicationSession Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#enumerations">Enumerations</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/applicationsession.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/messaging/binarycodec.html">Binary Codec</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/binarycodec.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/binarycodec.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/messaging/jsoncodec.html">JSON Codec</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/jsoncodec.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/jsoncodec.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/messaging/session.html">qi::Session</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/session.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/session.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/messaging/session.html#qi-session-class-reference">qi::Session Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#enumerations">Enumerations</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#public-signals">Public Signals</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#public-static-functions">Public Static Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#signals-documentation">Signals Documentation</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/session.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/messaging/url.html">qi::Url</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/url.html#summary">Summary</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/messaging/url.html#reference">Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/messaging/url.html#qi-url-class-reference">qi::Url Class Reference</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/url.html#introduction">Introduction</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/url.html#public-functions">Public Functions</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/url.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="api/cpp/messaging/url.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/cpp/file.html">qi::File</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/file.html#summary">Summary</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/file.html#glossary">Glossary</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/file.html#detailed-usage-description">Detailed Usage Description</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#opening-a-file-in-read-only-mode-for-sharing-access">Opening a file in read-only mode for sharing access</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#file-access-lifetime">File access lifetime</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#request-or-provide-read-only-access-to-the-content-of-a-file">Request or provide read-only access to the content of a file</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#make-a-local-copy-of-a-provided-file">Make a local copy of a provided file</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#observe-the-progression-of-a-file-copy-transfer-or-other-long-operations">Observe the progression of a file copy, transfer or other long operations</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/file.html#complete-example-alice-s-image-store-service">Complete example : Alice&#8217;s Image Store Service</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#imagestore">ImageStore</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#imagestore-user-code">ImageStore User Code</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/cpp/file.html#reference">Reference</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#qi-file-class-reference">qi::File Class Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#introduction">Introduction</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#public-members">Public Members</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#public-functions">Public Functions</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#qi-progressnotifier-class-reference">qi::ProgressNotifier Class Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#introduction">Introduction</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#enumerations">Enumerations</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#public-members">Public Members</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#public-functions">Public Functions</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#members-documentation">Members Documentation</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#qi-fileoperation-class-reference">qi::FileOperation Class Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#introduction">Introduction</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#public-functions">Public Functions</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#types">Types</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="api/cpp/file.html#qi-filecopytolocal-class-reference">qi::FileCopyToLocal Class Reference</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#introduction">Introduction</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#public-functions">Public Functions</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l8"><a class="reference internal" href="api/cpp/file.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="cpp-classindex.html">C++ Class Index</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cpp-funcindex.html">C++ Function Index</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="api/python/index.html">Python qi API reference</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api/python/application.html">qi.Application API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/application.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/application.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/application.html#deprecated">Deprecated</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/application.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/clock.html">qi clock API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/clock.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/clock.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/logging.html">qi.logging API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/logging.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/logging.html#qi-logger-object-reference">qi.Logger Object Reference</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/python/logging.html#class-qi-logger">Class qi.Logger</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/logging.html#static-methods-reference">Static Methods Reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/path.html">qi.path API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/path.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/path.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/path.html#libraries-and-binaries-names">Libraries and binaries names</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/path.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/session.html">qi.Session API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/session.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/session.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/session.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/future.html">qi.Future API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/future.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/future.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/future.html#examples">Examples</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/future.html#cancellation-support">Cancellation support</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/signal.html">qi.Signal API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/signal.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/signal.html#signal-lazy-enabling">Signal lazy enabling</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/signal.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/signal.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/property.html">qi.Property API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/property.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/property.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/property.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/types.html">qi.Types* API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/types.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/types.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/types.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/bind.html">Bind API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/bind.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/bind.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/bind.html#examples">Examples</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/python/bind.html#how-to-have-two-functions-with-the-same-name">How to have two functions with the same name?</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/bind.html#how-to-specify-the-return-type-of-a-method">How to specify the return type of a method?</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/bind.html#how-to-specify-the-arguments-types-of-a-method">How to specify the arguments types of a method?</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/bind.html#how-to-hide-that-secret-internal-function">How to hide that secret internal function?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/async.html">qi.async, qi.PeriodicTask API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/async.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/async.html#qi-async">qi.async</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/async.html#qi-periodictask">qi.PeriodicTask</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/async.html#periodictask-operations-visualization">PeriodicTask operations visualization</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/async.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/translator.html">qi.Translator API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/translator.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/translator.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/translator.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/module.html">qi.Module API</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/module.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/module.html#prerequisite">Prerequisite</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/module.html#reference">Reference</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/python/module.html#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="api/python/file.html">qicore.File</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="api/python/file.html#summary">Summary</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/file.html#reference">Reference</a></li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/file.html#detailed-usage-description">Detailed Usage Description</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#opening-a-file-in-read-only-mode-for-sharing-access">Opening a file in read-only mode for sharing access</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#file-access-lifetime">File access lifetime</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#request-or-provide-read-only-access-to-the-content-of-a-file">Request or provide read-only access to the content of a file</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#make-a-local-copy-of-a-provided-file">Make a local copy of a provided file</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#observe-the-progression-of-a-file-copy-transfer-or-other-long-operations">Observe the progression of a file copy, transfer or other long operations</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="api/python/file.html#complete-example-alice-s-image-store-service">Complete example : Alice&#8217;s Image Store Service</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#imagestore">ImageStore</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#imagestore-user-code">ImageStore User Code</a></li>
+<li class="toctree-l7"><a class="reference internal" href="api/python/file.html#full-sources">Full Sources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="api/transtyping.html">&gt; Type equivalences between languages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#hands-on-guide">Hands-on guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="guide/index.html">Hands-on Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="guide/index.html#c">C++</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-client.html">C++ - How to write a qimessaging client</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-client.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-client.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-client.html#write-your-function">Write your function</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-client.html#running-your-client">Running your client</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-client.html#fully-automated-way">Fully automated way</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-client.html#semi-automated-way">Semi-automated way</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-client.html#manual-way">Manual way</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-service.html">C++ - How to write a qimessaging service</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-service.html#limitations">Limitations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-service.html#write-your-service">Write your service</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-service.html#running-your-service">Running your service</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-service.html#fully-automated-way">Fully automated way</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-service.html#semi-automated-way">Semi-automated way</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-service.html#manual-way">Manual way</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-register-types.html">Registering types in the type system</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-register-types.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-register-types.html#structures">Structures</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-register-types.html#using-pimpl-in-structures">Using PIMPL in structures</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-register-types.html#struct-extension">Struct extension</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="guide/cxx-register-types.html#adding-or-dropping-fields-automatically">Adding or dropping fields automatically</a></li>
+<li class="toctree-l8"><a class="reference internal" href="guide/cxx-register-types.html#adding-or-dropping-fields-manually">Adding or dropping fields manually</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-register-types.html#enums">Enums</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-register-types.html#classes">Classes</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-register-types.html#using-registration-helper">Using registration helper</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-register-types.html#doing-it-manually">Doing it manually</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-register-types.html#more-on-threading-model">More on Threading Model</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-register-types.html#warning-about-registration-order">Warning about registration order</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-async.html">Asynchronous operations</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-async.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-async.html#with-c-functions">With C++ functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-async.html#with-a-qi-anyobject">With a qi::AnyObject</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-async.html#using-the-returned-future">Using the returned future</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-async.html#with-a-qi-future">With a qi::Future</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-log.html">Using qi::log</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log.html#overview">Overview</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log.html#writing-logs">Writing logs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log.html#a-synchronous-logging">(A)synchronous logging</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log.html#add-remove-log-handlers">Add/Remove Log Handlers</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log.html#filtering-logs-output">Filtering logs output</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-log.html#level">Level</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-log.html#context">Context</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-log.html#category-filtering">Category filtering</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-log-client.html">How to receive and send logs</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#subscribe-to-logmanager-to-obtain-logs">Subscribe to LogManager to obtain logs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#add-a-publisher-to-send-logs">Add a publisher to send logs</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-log-client.html#send-logs-to-already-started-naoqi">Send logs to already started NAOqi</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#example">Example</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-log-client.html#send-logs-to-naoqi-before-naoqi-is-started">Send logs to NAOqi before NAOqi is started</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#id1">Example</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-log-client.html#id2">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-linguist.html">Internationalization Guide</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-linguist.html#overview">Overview</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-linguist.html#qilinguist-how-to-use-qilinguist">qiLinguist How to use qilinguist</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-linguist.html#configuration-of-translation-files">Configuration of translation files</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-linguist.html#add-qilinguist-configurations">Add qilinguist configurations</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-linguist.html#how-to-use-qilinguist">How to use qilinguist</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-linguist.html#how-to-internationalize-c-applications">How to internationalize C++ applications</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-linguist.html#update-cmakelists-txt">Update CMakeLists.txt</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-linguist.html#set-and-configure-qi-translator">Set and configure qi::Translator</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-linguist.html#how-to-translate-sentences">How to translate sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-linguist.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-path.html">Handling Paths Guide</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-path.html#overview">Overview</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-path.html#the-sdk-layout">The SDK Layout</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-path.html#the-problem">The problem</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-path.html#the-solution">The solution</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-path.html#using-namespace-path">Using Namespace path</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-path.html#notes-requirement">Notes &amp; Requirement</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-path.html#reading-and-writing-configuration-files">Reading and writing configuration files</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-path.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/cxx-qilang.html">Making Services using QiLang</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#strongly-typed-proxies">Strongly-typed Proxies</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#creating-your-service-project">Creating your Service Project</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#building">Building</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#running-the-service">Running the Service</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-qilang.html#from-your-computer">From your Computer</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-qilang.html#on-a-robot">On a Robot</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#using-strongly-typed-proxies-in-another-project">Using strongly typed proxies in another project</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/cxx-qilang.html#using-a-mock-up-of-the-service-in-another-project">Using a mock-up of the service in another project</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#distributing">Distributing</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#understanding-the-project-in-depth">Understanding the Project in depth</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/cxx-qilang.html#subpackages-and-subfolder-in-includes">Subpackages and subfolder in includes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="guide/index.html#python">Python</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="guide/py-client.html">Python - How to write a qimessaging client</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-client.html#introduction">Introduction</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-client.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-client.html#creating-an-application">Creating an application</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-client.html#calling-a-method-on-a-service">Calling a method on a service</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-client.html#starting-your-application">Starting your application</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-client.html#making-asynchronous-calls-using-qi-async">Making asynchronous calls using qi::async</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/py-service.html">Python - How to write a qimessaging service</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-service.html#introduction">Introduction</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-service.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-service.html#creating-a-service">Creating a service</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-service.html#creating-a-session">Creating a session</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-service.html#test-the-service">Test the service</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-service.html#wrapping-asynchronous-api">Wrapping Asynchronous API</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/py-service.html#single-threaded-multi-threaded-mode-for-services">Single-threaded / Multi-threaded mode for services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/py-log-client.html">Python - How to receive and send logs</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-log-client.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-log-client.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-log-client.html#subscribe-to-logmanager-to-obtain-logs">Subscribe to LogManager to obtain logs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-log-client.html#add-a-publisher-to-send-logs">Add a publisher to send logs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-log-client.html#example">Example</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-log-client.html#id1">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/py-tonaoqi2.html">How to switch from NAOqi to qi Framework</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-tonaoqi2.html#introduction">Introduction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-tonaoqi2.html#qi-framework-main-features">qi Framework main features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-tonaoqi2.html#getting-a-session-from-a-proxy">Getting a Session from a proxy</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-tonaoqi2.html#subscribe-to-a-memory-event">Subscribe to a memory event</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/py-tonaoqi2.html#pcall-vs-qi-async">PCall vs qi.async</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="guide/index.html#working-with-qi-application">Working with qi application</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="guide/qi-app-arguments.html">qi application arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/qi-app-arguments.html#application">Application</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-log-context-and-qi-log-context"><code class="docutils literal"><span class="pre">--qi-log-context</span></code> and <code class="docutils literal"><span class="pre">QI_LOG_CONTEXT</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-log-level-and-qi-log-level"><code class="docutils literal"><span class="pre">--qi-log-level</span></code> and <code class="docutils literal"><span class="pre">QI_LOG_LEVEL</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-log-color"><code class="docutils literal"><span class="pre">--qi-log-color</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-log-filters-and-qi-log-filters"><code class="docutils literal"><span class="pre">--qi-log-filters</span></code> and <code class="docutils literal"><span class="pre">QI_LOG_FILTERS</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-sdk-prefix-and-qi-sdk-prefix"><code class="docutils literal"><span class="pre">--qi-sdk-prefix</span></code> and <code class="docutils literal"><span class="pre">QI_SDK_PREFIX</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qi-app-arguments.html#applicationsession">ApplicationSession</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-url"><code class="docutils literal"><span class="pre">--qi-url</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-listen-url"><code class="docutils literal"><span class="pre">--qi-listen-url</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qi-app-arguments.html#qi-standalone"><code class="docutils literal"><span class="pre">--qi-standalone</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/qicli.html">Using qicli commands</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/qicli.html#how-to-run-qicli">How to run qicli</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="guide/qicli.html#prerequisite">Prerequisite</a></li>
+<li class="toctree-l7"><a class="reference internal" href="guide/qicli.html#running-qicli">Running qicli</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qicli.html#qicli-info">qicli info</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qicli.html#qicli-call">qicli call</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qicli.html#qicli-watch">qicli watch</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qicli.html#qicli-log-view">qicli log-view</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qicli.html#qicli-log-send">qicli log-send</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="guide/qilaunch.html">Using qilaunch</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="guide/qilaunch.html#detailed-description">Detailed description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="guide/qilaunch.html#example-usage">Example usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#design-documents">Design documents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="design/index.html">Design Documents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="design/network-usecase.html">Networking - Use Case</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="design/network-usecase.html#glossary">Glossary</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/network-usecase.html#use-case">Use Case</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/network-usecase.html#specific-network-issues">Specific network issues</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="design/network-binary-protocol.html">Network Binary Protocol</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="design/network-binary-protocol.html#glossary">Glossary</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/network-binary-protocol.html#messages">Messages</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="design/network-binary-protocol.html#message-header">Message header</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#magic">Magic</a></li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#id">Id</a></li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#size">Size</a></li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#version">Version</a></li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#type">Type</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="design/network-binary-protocol.html#defined-types">Defined types</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#service">Service</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="design/network-binary-protocol.html#defined-services">Defined services</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#object">Object</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="design/network-binary-protocol.html#id1">Defined services</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="design/network-binary-protocol.html#action">Action</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="design/network-binary-protocol.html#events">Events</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/network-binary-protocol.html#serialization">Serialization</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="design/network-binary-protocol.html#basic-types">Basic Types</a></li>
+<li class="toctree-l6"><a class="reference internal" href="design/network-binary-protocol.html#stl-types">STL Types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="design/codingstyle.html">Coding Convention</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#backward-compatibility">Backward Compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#naming-convention">Naming convention</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="design/codingstyle.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#headers">Headers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#header-include-statement">Header include statement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#export-symbol">Export symbol</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#private-implementation">Private Implementation</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="design/codingstyle.html#example-with-pimpl">Example with Pimpl</a></li>
+<li class="toctree-l6"><a class="reference internal" href="design/codingstyle.html#example-without-pimpl">Example without Pimpl</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#struct">Struct</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#exception">Exception</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#iterators">Iterators</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#enum">Enum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#members">Members</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#arguments">Arguments</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#virtual">Virtual</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#interface">Interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#pointers">pointers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#assert-exit">Assert/Exit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="design/codingstyle.html#coding-style">Coding Style</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#internal-documentation">Internal documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internal/typesystem.html">Type system</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#about-kinds">About kinds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#relation-between-types-and-signatures">Relation between types and signatures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#value-s-states">Value&#8217;s states</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#implementing-type-interfaces">Implementing type interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#what-functions-a-type-interface-must-implement">What functions a type interface must implement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#pointer-as-pointer-and-pointer-as-value">Pointer as pointer and pointer as value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#construction-destruction-cloning">Construction, destruction, cloning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#how-types-are-retrieved">How types are retrieved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#how-types-are-registered">How types are registered</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#about-type-info-comparison">About type_info comparison</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/typesystem.html#anyvalue-and-anyreference">AnyValue and AnyReference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="internal/object.html">Object type erasure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="internal/object.html#typing">Typing</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="internal/object.html#dynamicobjecttypeinterface">DynamicObjectTypeInterface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/object.html#staticobjecttypebase">StaticObjectTypeBase</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="internal/object.html#usage">Usage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="internal/object.html#genericobject">GenericObject</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/object.html#anyobject">AnyObject</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/object.html#object">Object</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="internal/object.html#about-futures">About futures</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="internal/template.html">Registering template types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="internal/template.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/template.html#particular-case-of-objects">Particular case of Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/template.html#retrieving-the-template-type">Retrieving the template type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/template.html#improvements">Improvements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="internal/call.html">Call code path</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="internal/call.html#method-advertising">Method advertising</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/call.html#calling-a-method-on-an-anyobject-genericobject">Calling a method on an AnyObject/GenericObject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/call.html#object-type-interface-implementation">Object type interface implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/call.html#qi-metacall">qi::metaCall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internal/call.html#remote-objects">Remote objects</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="internal/messaging.html">Messaging system</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="internal/messaging.html#high-level-view">High-level view</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#sessions">Sessions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#address-system">Address system</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#exchanging-objects">Exchanging objects</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#lifetime">Lifetime</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#sending-an-object-through-a-remoteobject-or-boundobject">Sending an object through a RemoteObject or BoundObject</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="internal/messaging.html#lower-level-view">Lower-level view</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#messages">Messages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#messages-types-and-ids">Messages types and IDs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#exchanging-messages">Exchanging messages</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="internal/messaging.html#middle-level-view-serialization">Middle-level view (serialization)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#streamcontext">StreamContext</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#serializing">Serializing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#deserializing">Deserializing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="internal/messaging.html#what-has-gone-bad-and-why-shared-memory-is-half-broken">What has gone bad (and why shared memory is half broken)?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#changelogs">Changelogs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog/index.html">qi Framework - ChangeLog</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="changelog/index.html#naoqi-v2-8">Naoqi v2.8</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="changelog/qi-framework-1-0-2.html">qiFramework v1.0.2 (2017-11-23)</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/qi-framework-1-0-2.html#improved-feature-s">Improved Feature(s)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/qi-framework-1-0-2.html#deprecated-feature-s">Deprecated Feature(s)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/qi-framework-1-0-2.html#bug-fix-es">Bug fix(es)</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-030.html">Merge Request #30 - 2017-12-13</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-030.html#fixes">Fixes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="changelog/index.html#naoqi-v2-7">Naoqi v2.7</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-029.html">Merge Request #29 - 2017-11-17</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-029.html#fixes">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-028.html">Merge Request #28 - 2017-07-18</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-028.html#new-feature">New Feature</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-028.html#fixes">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-027.html">Merge Request #27 - 2017-06-23</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-027.html#new-feature">New Feature</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-027.html#fixes">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-026.html">Merge Request #26 - 2017-05-18</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-026.html#fixes">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-025.html">Merge Request #25 - 2017-04-27</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-025.html#improvements">Improvements</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-025.html#deprecated">Deprecated</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-025.html#fixes">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-024.html">Merge Request #24 - August bis</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-024.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-023.html">Merge Request #23 - August</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-023.html#deprecations">Deprecations</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-022.html">Merge Request #22 - July</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-022.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-022.html#improved-feature-s">Improved Feature(s)</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-021.html">Merge Request #21 - June bis</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-021.html#improved-feature-s">Improved Feature(s)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-021.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="changelog/index.html#naoqi-v2-6-and-previous-versions">Naoqi v2.6 and previous versions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-020.html">Merge Request #20 - Juin</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-020.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-020.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-019.html">Merge Request #19 - March</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-019.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-019.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-018.html">Merge Request #18 - February</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-018.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-018.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-017.html">Merge Request #17 - January</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-017.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-017.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-016.html">Merge Request #16 - December (bis)</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-016.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-016.html#deprecations">Deprecations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-016.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-015.html">Merge Request #15 - December</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-015.html#features">Features</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-015.html#new-c-11-api-for-threading">New C++11 API for threading</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-015.html#deprecations">Deprecations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-015.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-014.html">Merge Request #14 - September</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-014.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-014.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-013.html">Merge Request #13 - August</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-013.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-013.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-012.html">Merge Request #12 - July</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-012.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-012.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-011.html">Merge Request #11 - July</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-011.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-011.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-010.html">Merge Request #10 - June</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-010.html#features">Features</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-010.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-009.html">Merge Request #9 - May</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-009.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-008.html">Merge Request #8 - May</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-008.html#small-changes">Small Changes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-008.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-007.html">Merge Request #7 - April</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-007.html#small-changes">Small Changes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-007.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-006.html">Merge Request #6 - January Bis</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-006.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-005.html">Merge Request #5 - January</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-005.html#small-changes">Small Changes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-005.html#bind-session-in-the-type-system">Bind Session in the type-system</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-005.html#qi-file">qi::File</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-005.html#bugfixes">Bugfixes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-004.html">Merge Request #4 - October</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-004.html#overview">Overview</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-004.html#small-changes">Small Changes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-004.html#new-feature-strands-and-actors">New feature: Strands and Actors</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-004.html#deprecation-qi-async-function-uint64-t">Deprecation: qi::async(Function, uint64_t)</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-003.html">Merge Request #3 - August 2014 bis</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-003.html#overview">Overview</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-003.html#small-changes">Small Changes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-003.html#sdk-path">SDK Path</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-003.html#logmanager">LogManager</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-003.html#bug-fixes">Bug fixes</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-003.html#python-object-registration-error">Python object registration error</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-003.html#signal-connection-bug">Signal connection bug</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-003.html#redmine-issues">Redmine issues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-002.html">Merge Request #2 - August 2014</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-002.html#overview">Overview</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-002.html#python-bindings">Python bindings</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-002.html#waitforservice">waitForService</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-002.html#async-calls">Async calls</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-002.html#using-modules">Using modules</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-002.html#redmine-issues">Redmine issues</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="changelog/mr-001.html">Merge Request #1 - July 2014</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-001.html#overview">Overview</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-001.html#global-changes">Global changes</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#bindings">Bindings</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#documentation">Documentation</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#libqicore">libqicore</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#libqi-and-clocks">libqi and clocks</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#libqimessaging-libqitype-libqi-and-liqiperf">libqimessaging, libqitype, libqi and liqiperf</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#python-bindings">Python bindings</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-001.html#new-features">New Features</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#qi-anymodule">qi::AnyModule</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-001.html#redmine-issues">Redmine issues</a></li>
+<li class="toctree-l6"><a class="reference internal" href="changelog/mr-001.html#api-modifications">API Modifications</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#id1">libqicore</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#libqitype">libqitype</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#libqi">libqi</a></li>
+<li class="toctree-l7"><a class="reference internal" href="changelog/mr-001.html#cleaning-headers-qitype-and-qimessaging">Cleaning headers qitype and qimessaging</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="changelog/interface.html">qi Framework - Deprecation history</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="changelog/interface.html#deprecation-in-libqi">Deprecation in libqi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="changelog/interface.html#deprecation-in-libqicore">Deprecation in libqicore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="changelog/interface.html#deprecation-in-libqi-python">Deprecation in libqi-python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="changelog/interface.html#deprecation-in-libqi-java">Deprecation in libqi-java</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+              </div>
+            </div>
+          </div>
+          
+            
+              <div class="yui-b" id="sidebar">
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Site map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">What&#8217;s new</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_dev_guide.html">NAOqi - Developer guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../home_nao.html"><strong>NAO</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../home_pepper.html"><strong>Pepper</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../home_romeo.html"><strong>Romeo</strong> - Documentation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/notice.html">Legal notices</a></li>
+</ul>
+
+        </div>
+      </div>
+              </div>
+            
+          
+        </div>
+    </main>
+    <a href="#0" class="cd-top"></a>
+    <div id="ft">
+      
+      <a title="Glossary" href="../../glossary.html">Glossary</a>
+      <a title="Site map" href="../../contents.html">Site map</a>
+      <a title="Index" href="../../genindex.html">Index</a>
+      <a title="Support" target="_blank" href="https://account.aldebaran.com/support/">Support</a>
+      <a title="Contact" target="_blank" href="https://www.aldebaran.com/en/contact">Contact</a>
+      <a title="Legal Notices" href="../../legal/notice.html">Legal Notices</a>
+      
+      
+      <img src="https://www.ald.softbankrobotics.com/sites/aldebaran/files/logos-picture/2016_digital_logo_sbr_112x31_0.png" alt="">
+    </div>
+  </div>
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

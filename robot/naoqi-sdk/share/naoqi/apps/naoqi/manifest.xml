@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- service manager relies on naoqi service being system.Naoqi -->
+<package version="2.1.6" uuid="system" typeVersion="1.0">
+  <names>
+    <name lang="en_US">NAOqi services</name>
+    <name lang="fr_FR">Services NAOqi</name>
+  </names>
+  <descriptions>
+    <description lang="en_US">NAOqi system services</description>
+    <description lang="fr_FR">Services système de NAOqi</description>
+  </descriptions>
+
+  <services>
+    <service name="Naoqi" autorun="true" execStart="naoqi-service --qi-url [URL] --qi-listen-url tcp://0.0.0.0:0" />
+    <service name="MdnsRegistrarService" autorun="true" execStart="qilaunch -n mdns -f mdnsservice.mdnsRegistration --qi-url [URL] --keep-running" />
+    <service name="Actuation" autorun="true" execStart="qilaunch --name actuation --module actuation_module.Actuation --qi-url [URL]" />
+    <service name="Mapping" autorun="true" execStart="qilaunch --name mapping --module actuation_module.Mapping --qi-url [URL]" />
+    <service name="PublicSD" autorun="true" execStart="publicsd --qi-listen-url tcp://127.0.0.1:9560" />
+    <service name="AccessControl" autorun="true" execStart="qilaunch --name AccessControl --object accesscontrol.AccessControl --qi-url [URL]" />
+    <service name="ContextFactory" autorun="true" execStart="qilaunch --name qicontextfactory --module qicontextfactory_module.ContextFactory --qi-url [URL]" />
+    <service name="HumanPerception" autorun="true" execStart="qilaunch --name HumanPerception --function hp.registerAndRunAll --qi-url [URL]" />
+  </services>
+  <requirements>
+    <naoqiRequirement minVersion="2.0"/>
+  </requirements>
+</package>

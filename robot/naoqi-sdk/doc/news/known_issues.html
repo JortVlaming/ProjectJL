@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Known issues &mdash; Aldebaran 2.8.5.10 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8.5.10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Aldebaran 2.8.5.10 documentation" href="../index.html" />
+    <link rel="up" title="What’s new" href="index.html" />
+    <link rel="next" title="ChangeLog" href="changelog.html" />
+    <link rel="prev" title="NAOqi OS – Synthesis – from 2.1 to 2.8" href="naosummary/os_nao.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115894784-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115894784-6');
+</script>
+
+<script type="text/javascript" src="https://cloud.aldebaran-robotics.com/static/js/topbar.js"></script>
+<style>
+div#hd::after {
+  
+  
+  content: 'NAOqi 2.8';
+  
+  
+  
+  position: absolute;
+  margin-top: -54px;
+  right: -4px;
+  font-size: 125%;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  }
+</style>
+<script>
+
+$(window).ready(function () {
+
+    //Aldebaran Top bar
+     var barLinks = [];
+     barLinks.push({'name':'Aldebaran Site', 'url':'http://www.aldebaran-robotics.com', 'click':'', 'img':'https://cloud.aldebaran-robotics.com/static/img/aldeb.png'});
+     barLinks.push({'name':'Documentation', 'url':'../index.html', 'click':"", 'img':''});
+     function ShowBar(name, email, usertype) {
+        var barParams = {
+            'name'    : name,
+            'email'   : email,
+            'usertype': usertype,
+            'loginfct': "FctLogin"
+        }
+        try { InitTopBar(barParams, barLinks); } catch (e) { console.log('Top Bar Init Failed'); }
+    }
+    ShowBar();
+
+    var width_label = 0;
+    $('dl.function-index dt > span').each(function () {
+        $(this).css('width', 'auto');
+        width_label = Math.max(width_label, $(this).width());
+    }).width(width_label + 30);
+    $('.sig-paren').width('auto');
+
+    // first level navigation
+
+    var buttonIds = [".naoqi", "pepper", "nao", "romeo"];
+    for(id in buttonIds){
+        $(id).removeClass("active");
+    }
+    //Aldebaran project
+    if ($('.toctree-l1.current a').text().indexOf("Romeo ")==0){
+        $(".romeo").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Pepper ")==0){
+        $(".pepper").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("NAO ")==0){
+        $(".nao").toggleClass('active');
+    }
+    else if($('.toctree-l1.current a').text().indexOf("NAOqi ")==0){
+        $(".naoqi").toggleClass('active');
+    }
+
+    //qibuild project
+    if ($('.toctree-l1.current a').text().indexOf("Welcome to qiBuild documentation !")==0){
+        $(".beginner").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Advanced qibuild usage")==0){
+        $(".advanced").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Hacking qiBuild")==0){
+        $(".hacking").toggleClass('active');
+    }
+
+    // add "On this page", add cssClasses
+    if($('.yui-g .section h1').length > 0){
+        $('.yui-g .section h1:first').addClass("titleWrapper");
+        $('.yui-g .section h1:first').after($("#on-this-page").html())
+    }
+    else if($('.yui-g .section h2').length > 0){
+        $('.yui-g .section h2:first').addClass("titleWrapper");
+        $('.yui-g .section h2:first').after($("#on-this-page").html())
+    }
+    //remove first element on this page
+    if($("#on-this-page").length > 0){
+        var doms = $(".yui-g .section :first").nextUntil("#toc-list");
+        doms = doms.add($("#toc-list"));
+        doms.wrapAll('<div class="iNavWrapper"></div>');
+        $("#toc-list ul li a:first").remove()
+        $("#toc-list ul:first").replaceWith($("#toc-list ul li").html())
+    }
+    $("#toc-list").hide();
+    $("#otp-link").click(function(){
+        $("#toc-list").slideToggle();
+        if($("h2#otp-link").hasClass("change-before")){
+            $("h2#otp-link").removeClass("change-before")
+        }
+        else{
+            $("h2#otp-link").addClass("change-before")
+        }
+    });
+
+    if($("a.current.reference.internal").length>0){
+        var left = $("a.current.reference.internal").position().left-1;
+        var width = $("a.current.reference.internal").width();
+        var offset = 51;
+        var sidebarWidth = 339;
+        var right = sidebarWidth - (left + width + offset);
+        if($("a.current.reference.internal").height() <= 15){
+            $("a.current.reference.internal").css("white-space","nowrap");
+            $("a.current.reference.internal").css({"backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        else{
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+            left = $("a.current.reference.internal").position().left-1;
+            width = $("a.current.reference.internal").width();
+            right = sidebarWidth - (left + width + offset);
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        $("a.current.reference.internal").parent().css("list-style-type","none");
+    }
+
+    //back to top
+    var offset = 300,
+    //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
+    offset_opacity = 1200,
+    //duration of the top scrolling animation (in ms)
+    scroll_top_duration = 700;
+    //grab the "back to top" link
+    var back_to_top = $('.cd-top');
+
+    //hide or show the "back to top" link
+    $(window).scroll(function(){
+        //back to top button
+        ( $(this).scrollTop() > offset ) ? back_to_top.addClass('cd-is-visible') : back_to_top.removeClass('cd-is-visible cd-fade-out');
+        if( $(this).scrollTop() > offset_opacity ) {
+            back_to_top.addClass('cd-fade-out');
+        }
+    });
+
+    //smooth scroll to top
+    back_to_top.click(function(event){
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0 ,
+        }, scroll_top_duration
+        );
+    });
+    //add show source button
+
+    //replace "go" with "search"
+    $("#searchbox form input[type=submit]").val("Search")
+
+    //trigger click on version triangle to jump to whats new
+    $("#hd").click(function(e){if(e.pageX >= this.offsetWidth && e.pageY<120){$(".whatsnew")[0].click()}})
+})
+
+</script>
+
+
+  </head>
+  <body role="document">
+
+    <div class="document">
+  <div id="custom-doc" class="yui-t3">
+    <div id="hd">
+      
+      <h1><a href="../index.html">SoftBank Robotics documentation</a>
+      
+      
+      <span><a class="whatsnew" href="index.html" >
+      
+          What's new in NAOqi 2.8?
+      
+      </a></span>
+      
+      </h1>
+      <div id="global-nav">
+        
+        <a class="naoqi" title="NAOqi Developer guide" href="../index_dev_guide.html">NAOqi</a>
+        <a class="pepper" title="Pepper documentation" href="../home_pepper.html">Pepper</a>
+        <a class="nao" title="NAO documentation" href="../home_nao.html">NAO</a>
+        <a class="romeo" title="Romeo Documentation" href="../home_romeo.html">Romeo</a>
+        
+        
+        
+        <div class="nav">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script></div>
+      </div>
+
+    </div>
+    <main class="cd-container">
+        <div id="bd">
+          <div id="yui-main">
+            <div class="yui-b">
+              <div class="yui-g" id="news-known_issues">
+                
+  <div class="section" id="known-issues">
+<h1>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">Bug #41607 False positive on NAO&#8217;s hands when fingers or wrist move.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Application developers should use touch sensors on NAO&#8217;s hands with care.
+Due to false positives, applications may not work as expected.</p>
+</div>
+<p><strong>Workaround</strong>:</p>
+<p>Use at least 2 tactile sensors from the hands to detect user feedback.</p>
+</li>
+</ul>
+<ul class="simple">
+<li>Bug #42441 Tai Chi Chuan Box from Choregraphe 2.8 is not adapted to NAO V6.</li>
+</ul>
+<ul class="simple">
+<li>Bug #41417 Temperature of knees rises in temperature very quickly during walk.</li>
+<li>Bug #40974 Robot Settings installation error on Windows 8.</li>
+<li>Bug #40836 Unexpected number of frames.</li>
+<li>Bug #41691 The chest button LED blinks in white after the rasta animation at boot.</li>
+<li>Bug #41485 The application update is not detected on Robot settings - Need to disconnect and reconnect.</li>
+<li>Bug #41474 NAO V6 do not say a sentence in Zone 1 on Japanese.</li>
+<li>Bug #41408 Robot Settings Missing translations for tool-tips and drop down lists.</li>
+<li>Bug #41175 The robot does not speak after loading/activating a topic that contains a recover rule.</li>
+<li>Bug #40714 Robot falls with a moveTo at Max config.</li>
+</ul>
+<ul class="simple">
+<li>Bug #41497 Robot can&#8217;t walk on carpet without falling.</li>
+<li>Bug #40714 Robot falls with a moveTo at Max config.</li>
+<li>Bug #41485 The application update is not detected on Robot settings - Need to disconnect and reconnect.</li>
+<li>Bug #41691 The chest button LED blinks in white after the rasta animation at boot.</li>
+</ul>
+<ul>
+<li><p class="first">Bug #37052 Obstacle avoidance box does not work on NAO.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Use ALNavigation.navigateTo instead.</p>
+</li>
+<li><p class="first">Bug #40321 Choregraphe fails to connect to real robot through Ethernet.</p>
+</li>
+<li><p class="first">Bug #40125 When no human, getEngagedHuman throws instead of returning null.</p>
+</li>
+<li><p class="first">Bug #41001 ERROR_CURRENT_NO_MOTOR on HeadBoard after calibration.</p>
+</li>
+<li><p class="first">Bug #41002 Mac installers have an incorrect signature.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Go into the system security settings, in order to allow package installation.</p>
+</li>
+<li><p class="first">Bug #40988 ALNavigation service sometimes fail to load.</p>
+</li>
+<li><p class="first">Bug #40950 Large dynamic concepts take up to 1 min to load.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be aware that adding too many items in a Dynamic concept will affect loading
+duration; For instance, loading a Dynamic concept containing thousands
+of sentences may take several minutes.</p>
+</div>
+</li>
+<li><p class="first">Bug #41022 After a firmware update,  the LEDs are not functional.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Reboot the robot.</p>
+</li>
+<li><p class="first">Bug #41170 Robot Settings Installation error while installing with the installer
+executable on a folder with special characters. (UTF8)</p>
+</li>
+<li><p class="first">Bug #41071 Top Camera resolution for 16VGA is -1.</p>
+</li>
+<li><p class="first">Bug #41084 The key &#8220;ChestButtonPressed&#8221; doesn&#8217;t exist in ALMemory if the button has never been pressed.</p>
+</li>
+<li><p class="first">Bug #41196 goToPosture returns true when it shouldn&#8217;t.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Do not stop the robotposture call.</p>
+</li>
+</ul>
+<ul class="simple">
+<li>Bug #40054 Undesired emergency shutdown.</li>
+<li>Bug #39965 -nao restart command is not shutting down and restarted as in 2.5.</li>
+</ul>
+<ul class="simple">
+<li>Bug #40709 NAO says &#8216;My battery will soon need charging&#8217; when charger is connected.</li>
+<li>Bug #39977 Robot connected through Ethernet and WiFI - Unplug Ethernet - Robot view and Video monitor frozen.</li>
+<li>Bug #39354, #39356 Python - qi.SingleThreaded() default behavior not consistent with documentation.</li>
+<li>Bug #39594 <a class="reference internal" href="../naoqi/audio/alaudiodevice-api.html#ALAudioDeviceProxy::getLeftMicEnergy" title="ALAudioDeviceProxy::getLeftMicEnergy"><code class="xref cpp cpp-func docutils literal"><span class="pre">ALAudioDeviceProxy::getLeftMicEnergy</span></code></a> and <a class="reference internal" href="../naoqi/audio/alaudiodevice-api.html#ALAudioDeviceProxy::getLeftMicEnergy" title="ALAudioDeviceProxy::getLeftMicEnergy"><code class="xref cpp cpp-func docutils literal"><span class="pre">ALAudioDeviceProxy::getLeftMicEnergy</span></code></a>
+do not work.</li>
+<li>Bug #40378, #39779 Corrupted images on bottom camera.</li>
+<li>Bug #40939 qiLog crash when the disk partition is full.</li>
+</ul>
+<ul class="simple">
+<li>Bug #40030 Bottom camera error when trying to wake up.</li>
+<li>Bug #40498 UI Manager doesn&#8217;t respond after a naoqi restart or a kill of naoqi-bin.</li>
+<li>Bug #40456 ALTabletService.playVideo timeouts on a missing remote file.</li>
+<li>Bug #40455 Touch the screen while a video is playing freezes or stops the video.</li>
+<li>Bug #40447 Javascript alert does not work in webview.</li>
+<li>Bug #40316 Call to ALTabletService.hideWebview may take up to 20s.</li>
+<li>Bug #40309 ANR in uimanager after a long run.</li>
+<li>Bug #40042 Getting Starting Wizard error after 2.7.0 -&gt; 2.7.1 upgrade.</li>
+<li>Bug #40025 After factory reset from boot-config, tablet cannot connect to robot.</li>
+<li>Bug #39870 Tablet Browser is not responding (ANR) on the bubbles screen.</li>
+<li>Bug #39853 During the brightness change from the Webpage, the Tablet screen is zoomed and dimmed.</li>
+</ul>
+<ul class="simple">
+<li>Bug #40031 Sometime, Pepper does not say anything when clicking on the chest button once.</li>
+<li>Bug #39909 ALBasicAwareness - Robot crash and dump generated after multiple reboot tablet.</li>
+<li>Bug #39584 ALMood - on robots equipped with stereo cameras, excitement doesn&#8217;t switch to calm.</li>
+</ul>
+<ul>
+<li><p class="first">Bug #40192 Critical Issue with ASR &amp; Dialog when changing language.</p>
+<p><a class="reference internal" href="../naoqi/audio/alspeechrecognition-api.html#ALSpeechRecognitionProxy::setLanguage__ssCR" title="ALSpeechRecognitionProxy::setLanguage"><code class="xref cpp cpp-func docutils literal"><span class="pre">ALSpeechRecognitionProxy::setLanguage</span></code></a> and <a class="reference internal" href="../naoqi/interaction/dialog/aldialog-api.html#ALDialogProxy::setLanguage__ssCR" title="ALDialogProxy::setLanguage"><code class="xref cpp cpp-func docutils literal"><span class="pre">ALDialogProxy::setLanguage</span></code></a>
+must not be called at the same time as any other ALSpeechRecognition or ALDialog method.</p>
+<p><strong>Workaround</strong>:</p>
+<p>If the problem occurs, reboot the robot.</p>
+<p>To avoid this issue, make sure your application does not try to set the
+language while any other ALSpeechRecognition or ALDialog method is running.</p>
+</li>
+</ul>
+<ul>
+<li><p class="first">Bug #38698 Japanese only: execution of ^sCall and pau=xis not done in the right order.</p>
+</li>
+<li><p class="first">Bug #38138 Available ASR languages list is not updated when uninstalling a language.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Reboot the robot.</p>
+</li>
+<li><p class="first">Bug #36599 tts.say(stringToSay, language) does not use default voice for the first sentence after changing the language.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Force change the voice.</p>
+</li>
+<li><p class="first">Bug #33285 Topic containing this word &#8220;終始&#8221; doesn&#8217;t work.</p>
+</li>
+</ul>
+<ul class="simple">
+<li>Bug #39324 Deadlock on ALTextToSpeech.reset().</li>
+<li>Bug #39495 Brightness issue after waking up the tablet.</li>
+</ul>
+<ul class="simple">
+<li>Bug #38114 Virtual robots cannot run services written in Python.</li>
+</ul>
+<ul>
+<li><p class="first">Bug #39221 Faking to stop an app stops the robot movement but not the app.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Maintain your hand long enough to kill properly the application.</p>
+</li>
+<li><p class="first">Bug #38473 Actuation.makeCroppedAnimation does not support Animation which
+contain a planar move trajectory.</p>
+</li>
+<li><p class="first">Bug #37659 PushRecovery will always put Pepper in Safeguard because body will
+be a &#8220;disabled device&#8221;.</p>
+</li>
+<li><p class="first">Bug #38970 stopNavigateTo does not stop robot turn.</p>
+</li>
+<li><p class="first">Bug #36454 The robot&#8217;s own movements make the robot think he has been moved,
+triggering safeguard mode</p>
+</li>
+</ul>
+<ul class="simple">
+<li>Bug #39339 Variables affected when matching concept are not really affected.</li>
+<li>Bug #39538 Dialog - Matched functor rules do not raise Dialog/SpeakFailure.</li>
+<li>Bug #39524 Result of addition of two dates is not printed if superior at year 9999.</li>
+<li>Bug #39439 Knowledge - meta node url is empty.</li>
+</ul>
+<ul class="simple">
+<li>Bug #39144 ASR active during ALTextToSpeech.say makes LEDs blue while robot is speaking.</li>
+</ul>
+<ul>
+<li><p class="first">Bug #39258 If any service crashes without making the robot crash, Choregraphe will not get it back.</p>
+<p><strong>Workaround</strong>:</p>
+<p>Disconnect Choregraphe from the robot, wait his fully restart, i.e. when he is standing,
+then reconnect Choregraphe to the robot.</p>
+</li>
+</ul>
+<ul class="simple">
+<li>Bug #35478 Dialog - Samerule event does not work as expected because dialog is not cleared properly.</li>
+</ul>
+<ul>
+<li><p class="first">Bug #35433 qi::sleepUntil mis-behaves on windows</p>
+<p><strong>Workaround</strong>:</p>
+<p>Replace:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">qi</span><span class="o">::</span><span class="n">sleepUntil</span><span class="p">(</span><span class="n">currentTime</span> <span class="o">+</span> <span class="n">period</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>By:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">until</span> <span class="o">=</span> <span class="n">currentTime</span> <span class="o">+</span> <span class="n">period</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">nanoseconds</span><span class="p">(</span>
+              <span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">qi</span><span class="o">::</span><span class="n">NanoSeconds</span><span class="o">&gt;</span><span class="p">(</span>
+                <span class="n">until</span> <span class="o">-</span> <span class="n">qi</span><span class="o">::</span><span class="n">SteadyClock</span><span class="o">::</span><span class="n">now</span><span class="p">()).</span><span class="n">count</span><span class="p">()));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<ul>
+<li><p class="first">Bug #35788 Choregraphe - The status of a service launched or stopped from
+Choregraphe is not updated in Choregraphe.</p>
+<p><strong>Workaround</strong>:
+when it occurs, click on the disconnect button in Choregraphe,
+then reconnect.</p>
+</li>
+</ul>
+<ul class="simple">
+<li>Bug #38470 ALMood - VoiceEmotionAnalysis - Value and Confidence stay at zero for excitement and laughter.</li>
+</ul>
+<ul class="simple">
+<li>Bug #37148 Python SDK: a function passed to andThen() is not called if the function has no argument in its signature.</li>
+</ul>
+<ul>
+<li><p class="first">Bug #29105 PackageManager can&#8217;t handle non-ASCII characters in pm.db.lock file path on Windows.</p>
+<p><strong>Limitation</strong>:
+non ASCII (notably Japanese) characters in user name are not supported on Windows.</p>
+</li>
+</ul>
+<ul>
+<li><p class="first">Bug #36489 NAOqi crash occurs when initializing a robot from boot-config.</p>
+</li>
+<li><p class="first">Bug #38488 In Chinese, Dialog topics with numbers composed of 14+ characters break the ASR when loading.</p>
+<p><strong>Limitation</strong>:
+numbers of more than 14 characters are not supported.</p>
+</li>
+</ul>
+<ul>
+<li><p class="first">Bug #37932 ALServiceManager cannot restart a service, even manually, after package update.</p>
+<p><strong>Workaround</strong>:
+restart NAOqi.</p>
+</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Bug #37356 ALUserInfo - Age is automatically updated by a wrong value when try to get it.</li>
+<li>Bug #37958 Cannot upload an application on Store.</li>
+</ul>
+<ul class="simple">
+<li>Bug #35441 Nuance Remote not always available on first proposal.</li>
+</ul>
+<p>&#8212;</p>
+<ul>
+<li><p class="first">Bug #35482 ALTextToSpeech.setParameter speed/pitch not working for language Chinese.</p>
+<p><strong>Workaround</strong>:
+to change the pitch, use tag <em>\\vct=XXX\\</em> (in %).</p>
+<p>Note that setParameter(speed, XXX) changes the speed AND the pitch of the voice.
+So, to change the speed, use both tags <em>\\rspd=XXX\\\\vct=XXX\\</em> (in %).</p>
+</li>
+<li><p class="first">Bug #35905 Non-ASCII characters in file path (name or folder) prevent application download on robot.</p>
+<p><strong>Workaround</strong>: do not use Non-ASCII characters when naming files or folders in a <strong>Project</strong>.</p>
+</li>
+<li><p class="first">Bug #35722 When &#8220;&lt;&gt;&#8221; in TTS.say in Japanese, TTS doesn&#8217;t work anymore.</p>
+<p><strong>Workaround</strong>: do not insert character string &#8220;&lt;&gt;&#8221; in any input to be said by
+<strong>Pepper</strong>.</p>
+</li>
+</ul>
+<ul>
+<li><p class="first">Bug #22835 Choregraphe - Play Sound File Box: ALAudioPlayer.wait lock randomly.</p>
+<p><strong>Workaround</strong>: do not use .MP3 file format, prefer <strong>OGG</strong> or <strong>WAV</strong> files.</p>
+</li>
+</ul>
+<ul class="simple">
+<li>According to its customization via preferences, <strong>Pepper</strong> may automatically
+display <strong>Settings Menu</strong> at start-up. In this case, and when
+<strong>Pepper</strong> automatically reboots after a crash, the <strong>Settings Menu</strong>
+appears again, whereas it should not.</li>
+</ul>
+<ul class="simple">
+<li>Bug #33227 Frequent remote disconnection.</li>
+<li>Bug #35927 Choregraphe - &#8220;Export Vision Recognition Database&#8221; is disabled.</li>
+<li>Bug #35929 Choregraphe - Cannot send current vision recognition database to the robot.</li>
+</ul>
+<p>&#8212;</p>
+<ul class="simple">
+<li>Bug #31812 Vision Recognition - no way to package a VRD in an app.</li>
+<li>Bug #32835 Photo storage clean up method takes long to perform.</li>
+<li>Bug #32159 Sound Localization and Detection are blocked after having called
+ALAudioDevice.setParameter(&#8220;outputSampleRate&#8221;)</li>
+<li>Bug #32741 ASR not paused when saying a notification.</li>
+<li>Bug #30634 Visual tracking takes time to start.</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Bug #29956 In Japanese keyboard, &#8216;Backspace&#8217; key adds new characters instead of deleting current.</li>
+</ul>
+<ul class="simple">
+<li><strong>WPA2-Enterprise</strong> only experimentally supported.</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Bug #29336 Choregraphe - Mac only  Choregraphe does not detect disconnection.</li>
+<li>Choregraphe - Arabic may encounter right-to-left edition issues.</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Bug #22971 MoveAlong only works on <strong>Pepper</strong>. Planar moves is not yet available
+for <strong>NAO</strong>.</li>
+</ul>
+</div>
+
+
+              </div>
+            </div>
+          </div>
+          
+            
+              <div class="yui-b" id="sidebar">
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Site map</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">What&#8217;s new</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2.8/addendum2.8.5.html">Addendum - 2.8.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.8/whatsnew2.8.html">Release Notes - 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.8/choregraphe_rn2.8.html"><strong>Choregraphe</strong> 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.8/naoqi_api_rn2.8.html"><strong>NAOqi API</strong> &amp; <strong>SDKs</strong> - 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.8/naoqi_os_rn2.8.html"><strong>NAOqi OS</strong> 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="naosummary/whatsnew_nao.html">Release Notes &#8211; Synthesis &#8211; from 2.1 to 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="naosummary/choregraphe_nao.html">Choregraphe  &#8211; Synthesis &#8211; from 2.1 to 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="naosummary/api_nao.html">APIs  &#8211; Synthesis &#8211; from 2.1 to 2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="naosummary/os_nao.html">NAOqi OS  &#8211; Synthesis &#8211; from 2.1 to 2.8</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Known issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html">ChangeLog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.7/index.html">Release notes - 2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.6/index.html">Release notes - 2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.5/index.html">Release notes - 2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.4/index.html">Release notes - 2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.3/index.html">Release notes - 2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.0/index.html">Release notes - 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.14/index.html">Release notes - 1.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.12/index.html">Release notes - 1.12</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index_dev_guide.html">NAOqi - Developer guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../home_nao.html"><strong>NAO</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../home_pepper.html"><strong>Pepper</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../home_romeo.html"><strong>Romeo</strong> - Documentation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/notice.html">Legal notices</a></li>
+</ul>
+
+        </div>
+      </div>
+              </div>
+            
+          
+        </div>
+    </main>
+    <a href="#0" class="cd-top"></a>
+    <div id="ft">
+      
+      <a title="Glossary" href="../glossary.html">Glossary</a>
+      <a title="Site map" href="../contents.html">Site map</a>
+      <a title="Index" href="../genindex.html">Index</a>
+      <a title="Support" target="_blank" href="https://account.aldebaran.com/support/">Support</a>
+      <a title="Contact" target="_blank" href="https://www.aldebaran.com/en/contact">Contact</a>
+      <a title="Legal Notices" href="../legal/notice.html">Legal Notices</a>
+      
+      
+      <img src="https://www.ald.softbankrobotics.com/sites/aldebaran/files/logos-picture/2016_digital_logo_sbr_112x31_0.png" alt="">
+    </div>
+  </div>
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>
