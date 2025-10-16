@@ -30,19 +30,49 @@
             background: gray;
             transition: background 0.3s ease;
         }
+        main {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+        .column {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #log {
+            width: 300px;
+            height: 400px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
 <body>
-    <div id="status">
-        <div id="dot"></div>
-        <span id="text"></span>
-        <button id="connectButton">Connect</button>
-    </div>
-    <div id="wsConnected">
-        <input type="text" id="messageInput" placeholder="Type your message here..." />
-        <button id="sendMessageButton">Send Message</button>
-    </div>
+    <main>
+        <div class="column">
+            <div id="status">
+                <div id="dot"></div>
+                <span id="text"></span>
+                <button id="connectButton">Connect</button>
+            </div>
+            <div id="wsConnected">
+                <input type="text" id="messageInput" placeholder="Type your message here..." />
+                <button id="sendMessageButton">Send Message</button>
+
+            </div>
+        </div>
+        <div id="log"></div>
+    </main>
     <script type="module" src="./main.js"></script>
 </body>
 

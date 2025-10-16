@@ -3,7 +3,12 @@ const WS_URL = "ws://100.93.139.18:3000";
 const dot = document.getElementById("dot")!;
 const text = document.getElementById("text")!;
 
-// Change this URL to the actual WebSocket API endpoint you're connecting to
+const connectButton = document.getElementById("connectButton")!;
+const sendMessageButton = document.getElementById("sendMessageButton")!;
+
+const wsConnectedDiv = document.getElementById("wsConnected")!;
+const log = document.getElementById("log");
+
 let ws: WebSocket | null = null;
 
 function setStatus(state: "connected" | "disconnected" | "error" | "connecting") {
@@ -11,14 +16,14 @@ function setStatus(state: "connected" | "disconnected" | "error" | "connecting")
         case "connected":
             dot.style.background = "limegreen";
             text.textContent = "Connected";
-            document.getElementById("connectButton")!.innerHTML = "disconnect";
-            document.getElementById("wsConnected")!.style.display = "block";
+            connectButton.innerHTML = "disconnect";
+            wsConnectedDiv.style.display = "block";
             break;
         case "disconnected":
             dot.style.background = "gray";
             text.textContent = "Disconnected";
-            document.getElementById("connectButton")!.innerHTML = "connect";
-            document.getElementById("wsConnected")!.style.display = "none";
+            connectButton.innerHTML = "connect";
+            wsConnectedDiv.style.display = "none";
             break;
         case "error":
             dot.style.background = "orange";
@@ -27,13 +32,22 @@ function setStatus(state: "connected" | "disconnected" | "error" | "connecting")
         case "connecting":
             dot.style.background = "yellow";
             text.textContent = "Connecting...";
-            document.getElementById("connectButton")!.innerHTML = "disconnect";
-            document.getElementById("wsConnected")!.style.display = "none";
+            connectButton.innerHTML = "disconnect";
+            wsConnectedDiv.style.display = "none";
             break;
     }
 }
 
 setStatus("disconnected");
+
+function addLog(message: string) {
+    if (log) {
+        const entry = document.createElement("div");
+        entry.textContent = message;
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight; // Auto-scroll to the bottom
+    }
+}
 
 function createWebSocket() {
     setStatus("connecting");
@@ -42,13 +56,14 @@ function createWebSocket() {
         if (!ws) return;
         setStatus("connected");
         console.log("WebSocket connection established");
+        addLog("WebSocket connection established");
         ws.send("Hello Server!");
     };
 
     ws.onmessage = (event) => {
         if (!ws) return;
         console.log("Message from server:", event.data);
-        document.body.insertAdjacentHTML("beforeend", `<p>Message from server: ${event.data}</p>`);
+        addLog(`[Server]: ${event.data}`);
     };
 
     ws.onclose = (event) => {
@@ -62,12 +77,15 @@ function createWebSocket() {
 
             attemptReconnection();
         }
+
+        addLog("WebSocket connection closed");
     };
 
     ws.onerror = (error) => {
         if (!ws) return;
         console.error("WebSocket error:", error);
         setStatus("error");
+        addLog("WebSocket error occurred! Check console for details.");
     };
 }
 
@@ -76,6 +94,7 @@ function attemptReconnection() {
     console.log(`Attempting to reconnect in ${retryInterval / 1000} seconds...`);
     setTimeout(() => {
         if (!ws || ws.readyState === WebSocket.CLOSED) {
+            addLog("Attempting to reconnect...");
             createWebSocket();
         }
     }, retryInterval);
@@ -97,6 +116,7 @@ function sendMessage(message: string) {
 document.getElementById("sendMessageButton")?.addEventListener("click", () => {
     const input = document.getElementById("messageInput") as HTMLInputElement;
     if (input && input.value) {
+        addLog(`[You]: ${input.value}`);
         sendMessage(input.value);
         input.value = "";
     }
