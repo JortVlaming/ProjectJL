@@ -38,7 +38,7 @@ ws.onopen = () => {
 
 ws.onmessage = (event) => {
     console.log("Message from server:", event.data);
-    document.body.insertAdjacentHTML("beforeend", `<p>Message from server: ${event.data}</p>`);
+    document.getElementById("log")!.insertAdjacentHTML("beforeend", `<p>Message from server: ${event.data}</p>`);
 };
 
 ws.onclose = () => {
