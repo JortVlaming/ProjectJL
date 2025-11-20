@@ -7,5 +7,7 @@ services:
     ports:
       - "9000:9000"            # WebSocket port
     volumes:
-      - ./:/mnt/pynaoqi-server   # Mount to container
+      - ./src:/pynaoqi-server   # Mount to container
+      - ./naoqi-sdk:/opt/naoqi-sdk
+      - ./pynaoqi-sdk:/opt/pynaoqi-sdk
     tty: true                   # Keep container running for interactive use

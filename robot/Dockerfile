@@ -14,8 +14,8 @@ RUN pip install --upgrade pip setuptools wheel \
  && pip install websocket-server==0.4.0
 
 # copy NAOqi SDKs into image
-COPY naoqi-sdk /opt/naoqi-sdk
-COPY pynaoqi-sdk /opt/pynaoqi-sdk
+# COPY naoqi-sdk /opt/naoqi-sdk
+# COPY pynaoqi-sdk /opt/pynaoqi-sdk
 
 # set environment variables inside container
 ENV PYTHONPATH=/opt/pynaoqi-sdk/lib/python2.7/site-packages

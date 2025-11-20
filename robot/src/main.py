@@ -1,9 +1,5 @@
 # main.py
 import threading
-import os
-
-print os.listdir("/opt/pynaoqi-sdk/lib/python2.7/site-packages")
-print os.path.exists("/opt/pynaoqi-sdk/lib/python2.7/site-packages/_qi.so")
 
 from server import WebsocketServer
 import json
