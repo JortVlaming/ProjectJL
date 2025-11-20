@@ -1,3 +1,11 @@
+export interface RobotMessage {
+    type: "connect"|"method",
+    robot: string,
+    service: string,
+    method: string,
+    args?: any[]
+}
+
 export default class Robot {
     ws: WebSocket | null = null;
     robot_ip: string;
@@ -24,18 +32,22 @@ export default class Robot {
         };
     }
 
-    say(message: string) {
+    private sendToRobot(message: RobotMessage) {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             console.log(`Sending message to robot: ${message}`);
-            this.ws.send(JSON.stringify({
+            this.ws.send(JSON.stringify(message));
+        } else {
+            console.error("WebSocket is not open. Cannot send message.");
+        }
+    }
+
+    say(message: string) {
+        this.sendToRobot({
                 type: "method",
                 robot: this.robot_ip,
                 service: "ALTextToSpeech",
                 method: "say",
                 args: [message]
-            }));
-        } else {
-            console.error("WebSocket is not open. Cannot send message.");
-        }
+            });
     }
 }
