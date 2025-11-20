@@ -1,0 +1,704 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configure NAO &mdash; Aldebaran 2.8.5.10 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.8.5.10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Aldebaran 2.8.5.10 documentation" href="../../index.html" />
+    <link rel="up" title="First steps with NAO" href="introduction_nao.html" />
+    <link rel="next" title="Install Basic Channel" href="install_basic_channel.html" />
+    <link rel="prev" title="Get Robot settings" href="robot_settings.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115894784-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115894784-6');
+</script>
+
+<script type="text/javascript" src="https://cloud.aldebaran-robotics.com/static/js/topbar.js"></script>
+<style>
+div#hd::after {
+  
+  
+  content: 'NAOqi 2.8';
+  
+  
+  
+  position: absolute;
+  margin-top: -54px;
+  right: -4px;
+  font-size: 125%;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  }
+</style>
+<script>
+
+$(window).ready(function () {
+
+    //Aldebaran Top bar
+     var barLinks = [];
+     barLinks.push({'name':'Aldebaran Site', 'url':'http://www.aldebaran-robotics.com', 'click':'', 'img':'https://cloud.aldebaran-robotics.com/static/img/aldeb.png'});
+     barLinks.push({'name':'Documentation', 'url':'../../index.html', 'click':"", 'img':''});
+     function ShowBar(name, email, usertype) {
+        var barParams = {
+            'name'    : name,
+            'email'   : email,
+            'usertype': usertype,
+            'loginfct': "FctLogin"
+        }
+        try { InitTopBar(barParams, barLinks); } catch (e) { console.log('Top Bar Init Failed'); }
+    }
+    ShowBar();
+
+    var width_label = 0;
+    $('dl.function-index dt > span').each(function () {
+        $(this).css('width', 'auto');
+        width_label = Math.max(width_label, $(this).width());
+    }).width(width_label + 30);
+    $('.sig-paren').width('auto');
+
+    // first level navigation
+
+    var buttonIds = [".naoqi", "pepper", "nao", "romeo"];
+    for(id in buttonIds){
+        $(id).removeClass("active");
+    }
+    //Aldebaran project
+    if ($('.toctree-l1.current a').text().indexOf("Romeo ")==0){
+        $(".romeo").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Pepper ")==0){
+        $(".pepper").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("NAO ")==0){
+        $(".nao").toggleClass('active');
+    }
+    else if($('.toctree-l1.current a').text().indexOf("NAOqi ")==0){
+        $(".naoqi").toggleClass('active');
+    }
+
+    //qibuild project
+    if ($('.toctree-l1.current a').text().indexOf("Welcome to qiBuild documentation !")==0){
+        $(".beginner").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Advanced qibuild usage")==0){
+        $(".advanced").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Hacking qiBuild")==0){
+        $(".hacking").toggleClass('active');
+    }
+
+    // add "On this page", add cssClasses
+    if($('.yui-g .section h1').length > 0){
+        $('.yui-g .section h1:first').addClass("titleWrapper");
+        $('.yui-g .section h1:first').after($("#on-this-page").html())
+    }
+    else if($('.yui-g .section h2').length > 0){
+        $('.yui-g .section h2:first').addClass("titleWrapper");
+        $('.yui-g .section h2:first').after($("#on-this-page").html())
+    }
+    //remove first element on this page
+    if($("#on-this-page").length > 0){
+        var doms = $(".yui-g .section :first").nextUntil("#toc-list");
+        doms = doms.add($("#toc-list"));
+        doms.wrapAll('<div class="iNavWrapper"></div>');
+        $("#toc-list ul li a:first").remove()
+        $("#toc-list ul:first").replaceWith($("#toc-list ul li").html())
+    }
+    $("#toc-list").hide();
+    $("#otp-link").click(function(){
+        $("#toc-list").slideToggle();
+        if($("h2#otp-link").hasClass("change-before")){
+            $("h2#otp-link").removeClass("change-before")
+        }
+        else{
+            $("h2#otp-link").addClass("change-before")
+        }
+    });
+
+    if($("a.current.reference.internal").length>0){
+        var left = $("a.current.reference.internal").position().left-1;
+        var width = $("a.current.reference.internal").width();
+        var offset = 51;
+        var sidebarWidth = 339;
+        var right = sidebarWidth - (left + width + offset);
+        if($("a.current.reference.internal").height() <= 15){
+            $("a.current.reference.internal").css("white-space","nowrap");
+            $("a.current.reference.internal").css({"backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        else{
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+            left = $("a.current.reference.internal").position().left-1;
+            width = $("a.current.reference.internal").width();
+            right = sidebarWidth - (left + width + offset);
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        $("a.current.reference.internal").parent().css("list-style-type","none");
+    }
+
+    //back to top
+    var offset = 300,
+    //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
+    offset_opacity = 1200,
+    //duration of the top scrolling animation (in ms)
+    scroll_top_duration = 700;
+    //grab the "back to top" link
+    var back_to_top = $('.cd-top');
+
+    //hide or show the "back to top" link
+    $(window).scroll(function(){
+        //back to top button
+        ( $(this).scrollTop() > offset ) ? back_to_top.addClass('cd-is-visible') : back_to_top.removeClass('cd-is-visible cd-fade-out');
+        if( $(this).scrollTop() > offset_opacity ) {
+            back_to_top.addClass('cd-fade-out');
+        }
+    });
+
+    //smooth scroll to top
+    back_to_top.click(function(event){
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0 ,
+        }, scroll_top_duration
+        );
+    });
+    //add show source button
+
+    //replace "go" with "search"
+    $("#searchbox form input[type=submit]").val("Search")
+
+    //trigger click on version triangle to jump to whats new
+    $("#hd").click(function(e){if(e.pageX >= this.offsetWidth && e.pageY<120){$(".whatsnew")[0].click()}})
+})
+
+</script>
+
+
+  </head>
+  <body role="document">
+
+    <div class="document">
+  <div id="custom-doc" class="yui-t3">
+    <div id="hd">
+      
+      <h1><a href="../../index.html">SoftBank Robotics documentation</a>
+      
+      
+      <span><a class="whatsnew" href="../../news/index.html" >
+      
+          What's new in NAOqi 2.8?
+      
+      </a></span>
+      
+      </h1>
+      <div id="global-nav">
+        
+        <a class="naoqi" title="NAOqi Developer guide" href="../../index_dev_guide.html">NAOqi</a>
+        <a class="pepper" title="Pepper documentation" href="../../home_pepper.html">Pepper</a>
+        <a class="nao" title="NAO documentation" href="../../home_nao.html">NAO</a>
+        <a class="romeo" title="Romeo Documentation" href="../../home_romeo.html">Romeo</a>
+        
+        
+        
+        <div class="nav">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script></div>
+      </div>
+
+    </div>
+    <main class="cd-container">
+        <div id="bd">
+          <div id="yui-main">
+            <div class="yui-b">
+              <div class="yui-g" id="family-nao_user_guide-first_conf">
+                
+  <div class="section" id="configure-nao">
+<span id="first-conf"></span><h1>Configure <strong>NAO</strong><a class="headerlink" href="#configure-nao" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="step3" class="img-inline" src="../../_images/step3_setup.png" /></td>
+<td><p class="first"><strong>During this step you will</strong>:</p>
+<p class="last"><em>configure NAO&#8217;s timezone, password, content, etc.</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="nao-getting-started-wizard">
+<span id="getting-started-nao"></span><h2><strong>NAO</strong> - Getting started wizard<a class="headerlink" href="#nao-getting-started-wizard" title="Permalink to this headline">¶</a></h2>
+<p>Follow the step by step <strong>Getting started</strong> wizard to configure your robot.</p>
+<div class="section" id="language-and-software-agreement">
+<span id="wizard-start"></span><h3>Language and software agreement<a class="headerlink" href="#language-and-software-agreement" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Step</th>
+<th class="head">Action</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><ol class="first last arabic simple">
+<li></li>
+</ol>
+</td>
+<td><p class="first">Choose the language.</p>
+<img alt="../../_images/getsartwiz_step1.png" src="../../_images/getsartwiz_step1.png" style="width: 380px; height: 245px;" />
+<p class="last">Click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><ol class="first last arabic simple" start="2">
+<li></li>
+</ol>
+</td>
+<td><p class="first">Check and validate the 2 conditions of the
+End-user Software License Agreement.</p>
+<img alt="../../_images/getsartwiz_step2.png" src="../../_images/getsartwiz_step2.png" style="width: 378px; height: 245px;" />
+<p class="last">Click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="setting-wifi-connection">
+<span id="setting-wifi"></span><h3>Setting WiFi connection<a class="headerlink" href="#setting-wifi-connection" title="Permalink to this headline">¶</a></h3>
+<p><strong>Specific cases</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">If you ...</th>
+<th class="head">See ...</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>must use a <strong>hidden network</strong></td>
+<td><a class="reference internal" href="nao-connecting.html#setting-wifi-nao-hidden"><span>WiFi connection to a hidden network</span></a></td>
+</tr>
+<tr class="row-odd"><td>need to configure the <strong>MAC address
+filtering</strong> of your WiFi access
+point</td>
+<td><a class="reference internal" href="nao-connecting.html#setting-wifi-nao-macaddress"><span>MAC Addresses</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Otherwise, follow the process below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Step</th>
+<th class="head">Action</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><ol class="first last arabic simple">
+<li></li>
+</ol>
+</td>
+<td><p class="first">Select one of the available WiFi networks.</p>
+<p>For further details, see: <a class="reference internal" href="nao-connecting.html#why-wifi-nao"><span>Why setting a WiFi connection</span></a>.</p>
+<img alt="../../_images/getsartwiz_step3.png" src="../../_images/getsartwiz_step3.png" style="width: 378px; height: 245px;" />
+<p class="last"><strong>Note</strong>: choose a Wifi network having one of the
+<a class="reference internal" href="nao-connecting.html#supported-personal-security-nao"><span>Supported personal securities</span></a>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><ol class="first last arabic simple" start="2">
+<li></li>
+</ol>
+</td>
+<td><p class="first">Complete the required parameters.</p>
+<img alt="../../_images/getsartwiz_step3bis.png" class="last" src="../../_images/getsartwiz_step3bis.png" style="width: 186px; height: 156px;" />
+</td>
+</tr>
+<tr class="row-even"><td><ol class="first last arabic simple" start="3">
+<li></li>
+</ol>
+</td>
+<td><p class="first">Click the <strong>Connect</strong> button.</p>
+<p>Once the WiFi is connected, a yellow star is displayed.</p>
+<img alt="../../_images/getsartwiz_step3ter.png" src="../../_images/getsartwiz_step3ter.png" style="width: 377px; height: 244px;" />
+<p><strong>Tips</strong>: Do not remove the cable yet: the wizard requires
+the Ethernet connection.</p>
+<p class="last">Click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="customization-steps">
+<span id="custom-robot"></span><span id="optional-settings-nao"></span><h3>Customization steps<a class="headerlink" href="#customization-steps" title="Permalink to this headline">¶</a></h3>
+<p>According to the presetting of your <strong>NAO</strong>, the following setting may appears:</p>
+<div class="section" id="timezone">
+<span id="tz-opt-nao"></span><h4>TimeZone<a class="headerlink" href="#timezone" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">Choose a time zone.</p>
+<img alt="../../_images/getsartwiz_step4timezone.png" src="../../_images/getsartwiz_step4timezone.png" style="width: 342px; height: 246px;" />
+<p class="last">Then click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="password">
+<span id="pw-opt-nao"></span><h4>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">Define a password to secure remote access to your <strong>NAO</strong>.</p>
+<img alt="../../_images/getsartwiz_step5password.png" src="../../_images/getsartwiz_step5password.png" style="width: 379px; height: 247px;" />
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Keep the password!</p>
+<p class="last">Robot&#8217;s password is mandatory to connect a computer to <strong>NAO</strong>.</p>
+</div>
+<p class="last">Then click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="robot-s-name">
+<span id="rn-opt-nao"></span><h4>Robot&#8217;s name<a class="headerlink" href="#robot-s-name" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">Customize the name of your <strong>NAO</strong>.</p>
+<p>This is useful if you have more than one <strong>NAO</strong>.</p>
+<img alt="../../_images/opt03_name1.png" src="../../_images/opt03_name1.png" style="width: 336px; height: 216px;" />
+<p class="last">Then click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="softbank-robotics-community-user-account">
+<span id="st-opt-nao"></span><h4><strong>SoftBank Robotics Community</strong> user account<a class="headerlink" href="#softbank-robotics-community-user-account" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">Enter the login and password of your <strong>SoftBank Robotics user Community
+Account</strong>.</p>
+<img alt="../../_images/getsartwiz_step_account.png" src="../../_images/getsartwiz_step_account.png" style="width: 377px; height: 243px;" />
+<p>Then click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+<img alt="../../_images/opt04_store_account_bis.png" src="../../_images/opt04_store_account_bis.png" style="width: 337px; height: 218px;" />
+<p>The connection to your <strong>SoftBank Robotics user Community Account</strong>
+is tested.</p>
+<p class="last">You will henceforth be able to retrieve applications and services from
+the <a class="reference internal" href="store_home_nao.html#store-nao"><span>NAO Apps Store</span></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="diagnostic-improvement">
+<span id="fb-opt-nao"></span><h4>Diagnostic &amp; improvement<a class="headerlink" href="#diagnostic-improvement" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first">Check and validate the automatic diagnostic report.</p>
+<img alt="../../_images/getsartwiz_step_diag.png" src="../../_images/getsartwiz_step_diag.png" style="width: 379px; height: 245px;" />
+<p class="last">Then click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="system-upgrade">
+<span id="su-opt-nao"></span><h4>System upgrade<a class="headerlink" href="#system-upgrade" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="94%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Step</th>
+<th class="head">Action</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><ol class="first last arabic simple">
+<li></li>
+</ol>
+</td>
+<td><p class="first"><em>Note: you may not see this screen.</em></p>
+<p>Click the <strong>Update now</strong> button.</p>
+<img alt="../../_images/getsartwiz_step_sys_upgrade.png" class="last" src="../../_images/getsartwiz_step_sys_upgrade.png" />
+</td>
+</tr>
+<tr class="row-odd"><td><ol class="first last arabic simple" start="2">
+<li></li>
+</ol>
+</td>
+<td><p class="first"><em>Note: you may not see this screen.</em></p>
+<p>If necessary, messages guides you in order to make sure the battery
+charger is plugged.</p>
+<img alt="../../_images/getsartwiz_step_sys_upgrade2.png" class="last" src="../../_images/getsartwiz_step_sys_upgrade2.png" />
+</td>
+</tr>
+<tr class="row-even"><td><ol class="first last arabic simple" start="3">
+<li></li>
+</ol>
+</td>
+<td><p class="first"><em>Note: you may not see this screen.</em></p>
+<p>Click the <strong>Start update</strong> button.</p>
+<img alt="../../_images/getsartwiz_step_sys_upgrade3.png" class="last" src="../../_images/getsartwiz_step_sys_upgrade3.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="application-update">
+<span id="app-upp-opt-nao"></span><h4>Application update<a class="headerlink" href="#application-update" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first"><em>Note: you may not see this screen.</em></p>
+<p>Click the <strong>Update all</strong> button.</p>
+<img alt="../../_images/getsartwiz_step_app_update.png" src="../../_images/getsartwiz_step_app_update.png" style="width: 379px; height: 245px;" />
+<p class="last">Then click the <img alt="next-button" class="img-inline" src="../../_images/next_btn.png" /> next button.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="language-management">
+<h4>Language management<a class="headerlink" href="#language-management" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first"><em>Note: you may not see this screen.</em></p>
+<p>If the selected language at the beginning of the configuration is not
+installed on the robot, you may face an error with the language update:</p>
+<img alt="../../_images/language_issue.png" src="../../_images/language_issue.png" />
+<p>To pass the error: set back the robot in English by clicking
+the button on the left, &#8220;Configure the language in English&#8221;.</p>
+<p>As a consequence, <strong>Robot Settings</strong> will switch back in English.</p>
+<p>If you want <strong>NAO</strong> talks in another language, contact the Customer support.</p>
+<p class="last">For further details, see: <a class="reference internal" href="contacting_support.html#contacting-support-nao"><span>Contacting customer support for NAO</span></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="end-of-nao-configuration-on-robot-settings">
+<h3>End of NAO configuration on Robot Settings<a class="headerlink" href="#end-of-nao-configuration-on-robot-settings" title="Permalink to this headline">¶</a></h3>
+<p>When the screen below appears, the initial configuration is completed:</p>
+<img alt="../../_images/getsartwiz_final.png" src="../../_images/getsartwiz_final.png" style="width: 380px; height: 246px;" />
+<ul class="simple">
+<li>Autonomous life is installed,</li>
+<li>English language is installed.</li>
+</ul>
+<p>To complete the configuration:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="3%" />
+<col width="48%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Step</th>
+<th class="head" colspan="2">Action</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><ol class="first last arabic simple">
+<li></li>
+</ol>
+</td>
+<td colspan="2"><p class="first">Click the <strong>Start!</strong> button.</p>
+<p>The <strong>Robot Settings</strong> now displays the settings menu:</p>
+<img alt="../../_images/robot_settings_02.png" class="last" src="../../_images/robot_settings_02.png" style="width: 451px; height: 294px;" />
+</td>
+</tr>
+<tr class="row-odd"><td><ol class="first last arabic simple" start="2">
+<li></li>
+</ol>
+</td>
+<td><p class="first"><img alt="wifi" class="img-inline" src="../../_images/wifi.png" /> <strong>If you had previously set up a WiFi connection</strong></p>
+<p>You can now remove the Ethernet cable and put back
+the hatch behind the head of the robot.</p>
+<p>As a consequence, <strong>Robot Settings</strong> will lost the connection and
+the robot will switch to the previously registered WiFi network.</p>
+<p>Connect your computer on this WiFi network and ask again <strong>NAO</strong> his
+IP Address in order to reconnect <strong>Robot Settings</strong> to the robot.</p>
+<img alt="../../_images/put_hatch.png" class="last" src="../../_images/put_hatch.png" />
+</td>
+<td><p class="first"><img alt="nowifi" class="img-inline" src="../../_images/no_wifi.png" /> <strong>If you haven&#8217;t set up a WiFi connection previously</strong></p>
+<p>When you want to connect to <strong>NAO</strong> again, plug the Ethernet cable
+and ask for <strong>NAO</strong> IP address.</p>
+<p class="last">Once connected in Robot Settings, you can setup a WiFi connection in
+the <strong>NAO</strong> settings.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next step</strong>: <a class="reference internal" href="install_basic_channel.html#install-basic-channel"><span>Install Basic Channel</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+              </div>
+            </div>
+          </div>
+          
+            
+              <div class="yui-b" id="sidebar">
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Site map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">What&#8217;s new</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_dev_guide.html">NAOqi - Developer guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../home_nao.html"><strong>NAO</strong> - Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html"><strong>NAO</strong> - User Guide</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="introduction_nao.html">First steps with <strong>NAO</strong></a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="getting_out_of_the_box.html">Unpack and turn ON <strong>NAO</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="robot_settings.html">Get <strong>Robot settings</strong></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="">Configure <strong>NAO</strong></a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="install_basic_channel.html">Install Basic Channel</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="interacting.html">Daily use</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuring.html">Configuring and settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="store_home_nao.html">NAO Apps Store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taking-care.html">Taking care of NAO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="understanding_nao.html">More details about <strong>NAO</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../nao_technical/index_naov6.html"><strong>NAO</strong> - Developer Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../home_pepper.html"><strong>Pepper</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../home_romeo.html"><strong>Romeo</strong> - Documentation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/notice.html">Legal notices</a></li>
+</ul>
+
+    <div id="on-this-page" style="display:none;">
+        <h2 id="otp-link">On this page</h2>
+        <div id="toc-list">
+            <ul>
+<li><a class="reference internal" href="#">Configure <strong>NAO</strong></a><ul>
+<li><a class="reference internal" href="#nao-getting-started-wizard"><strong>NAO</strong> - Getting started wizard</a><ul>
+<li><a class="reference internal" href="#language-and-software-agreement">Language and software agreement</a></li>
+<li><a class="reference internal" href="#setting-wifi-connection">Setting WiFi connection</a></li>
+<li><a class="reference internal" href="#customization-steps">Customization steps</a><ul>
+<li><a class="reference internal" href="#timezone">TimeZone</a></li>
+<li><a class="reference internal" href="#password">Password</a></li>
+<li><a class="reference internal" href="#robot-s-name">Robot&#8217;s name</a></li>
+<li><a class="reference internal" href="#softbank-robotics-community-user-account"><strong>SoftBank Robotics Community</strong> user account</a></li>
+<li><a class="reference internal" href="#diagnostic-improvement">Diagnostic &amp; improvement</a></li>
+<li><a class="reference internal" href="#system-upgrade">System upgrade</a></li>
+<li><a class="reference internal" href="#application-update">Application update</a></li>
+<li><a class="reference internal" href="#language-management">Language management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#end-of-nao-configuration-on-robot-settings">End of NAO configuration on Robot Settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+        </div>
+      </div>
+              </div>
+            
+          
+        </div>
+    </main>
+    <a href="#0" class="cd-top"></a>
+    <div id="ft">
+      
+      <a title="Glossary" href="../../glossary.html">Glossary</a>
+      <a title="Site map" href="../../contents.html">Site map</a>
+      <a title="Index" href="../../genindex.html">Index</a>
+      <a title="Support" target="_blank" href="https://account.aldebaran.com/support/">Support</a>
+      <a title="Contact" target="_blank" href="https://www.aldebaran.com/en/contact">Contact</a>
+      <a title="Legal Notices" href="../../legal/notice.html">Legal Notices</a>
+      
+      
+      <img src="https://www.ald.softbankrobotics.com/sites/aldebaran/files/logos-picture/2016_digital_logo_sbr_112x31_0.png" alt="">
+    </div>
+  </div>
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

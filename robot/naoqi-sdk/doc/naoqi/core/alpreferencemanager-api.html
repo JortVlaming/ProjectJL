@@ -1,0 +1,819 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ALPreferenceManager API &mdash; Aldebaran 2.8.5.10 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.8.5.10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Aldebaran 2.8.5.10 documentation" href="../../index.html" />
+    <link rel="up" title="ALPreferenceManager" href="alpreferencemanager.html" />
+    <link rel="next" title="ALResourceManager" href="alresourcemanager.html" />
+    <link rel="prev" title="ALPreferenceManager" href="alpreferencemanager.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115894784-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115894784-6');
+</script>
+
+<script type="text/javascript" src="https://cloud.aldebaran-robotics.com/static/js/topbar.js"></script>
+<style>
+div#hd::after {
+  
+  
+  content: 'NAOqi 2.8';
+  
+  
+  
+  position: absolute;
+  margin-top: -54px;
+  right: -4px;
+  font-size: 125%;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  }
+</style>
+<script>
+
+$(window).ready(function () {
+
+    //Aldebaran Top bar
+     var barLinks = [];
+     barLinks.push({'name':'Aldebaran Site', 'url':'http://www.aldebaran-robotics.com', 'click':'', 'img':'https://cloud.aldebaran-robotics.com/static/img/aldeb.png'});
+     barLinks.push({'name':'Documentation', 'url':'../../index.html', 'click':"", 'img':''});
+     function ShowBar(name, email, usertype) {
+        var barParams = {
+            'name'    : name,
+            'email'   : email,
+            'usertype': usertype,
+            'loginfct': "FctLogin"
+        }
+        try { InitTopBar(barParams, barLinks); } catch (e) { console.log('Top Bar Init Failed'); }
+    }
+    ShowBar();
+
+    var width_label = 0;
+    $('dl.function-index dt > span').each(function () {
+        $(this).css('width', 'auto');
+        width_label = Math.max(width_label, $(this).width());
+    }).width(width_label + 30);
+    $('.sig-paren').width('auto');
+
+    // first level navigation
+
+    var buttonIds = [".naoqi", "pepper", "nao", "romeo"];
+    for(id in buttonIds){
+        $(id).removeClass("active");
+    }
+    //Aldebaran project
+    if ($('.toctree-l1.current a').text().indexOf("Romeo ")==0){
+        $(".romeo").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Pepper ")==0){
+        $(".pepper").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("NAO ")==0){
+        $(".nao").toggleClass('active');
+    }
+    else if($('.toctree-l1.current a').text().indexOf("NAOqi ")==0){
+        $(".naoqi").toggleClass('active');
+    }
+
+    //qibuild project
+    if ($('.toctree-l1.current a').text().indexOf("Welcome to qiBuild documentation !")==0){
+        $(".beginner").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Advanced qibuild usage")==0){
+        $(".advanced").toggleClass('active');
+    }
+    else if ($('.toctree-l1.current a').text().indexOf("Hacking qiBuild")==0){
+        $(".hacking").toggleClass('active');
+    }
+
+    // add "On this page", add cssClasses
+    if($('.yui-g .section h1').length > 0){
+        $('.yui-g .section h1:first').addClass("titleWrapper");
+        $('.yui-g .section h1:first').after($("#on-this-page").html())
+    }
+    else if($('.yui-g .section h2').length > 0){
+        $('.yui-g .section h2:first').addClass("titleWrapper");
+        $('.yui-g .section h2:first').after($("#on-this-page").html())
+    }
+    //remove first element on this page
+    if($("#on-this-page").length > 0){
+        var doms = $(".yui-g .section :first").nextUntil("#toc-list");
+        doms = doms.add($("#toc-list"));
+        doms.wrapAll('<div class="iNavWrapper"></div>');
+        $("#toc-list ul li a:first").remove()
+        $("#toc-list ul:first").replaceWith($("#toc-list ul li").html())
+    }
+    $("#toc-list").hide();
+    $("#otp-link").click(function(){
+        $("#toc-list").slideToggle();
+        if($("h2#otp-link").hasClass("change-before")){
+            $("h2#otp-link").removeClass("change-before")
+        }
+        else{
+            $("h2#otp-link").addClass("change-before")
+        }
+    });
+
+    if($("a.current.reference.internal").length>0){
+        var left = $("a.current.reference.internal").position().left-1;
+        var width = $("a.current.reference.internal").width();
+        var offset = 51;
+        var sidebarWidth = 339;
+        var right = sidebarWidth - (left + width + offset);
+        if($("a.current.reference.internal").height() <= 15){
+            $("a.current.reference.internal").css("white-space","nowrap");
+            $("a.current.reference.internal").css({"backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        else{
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+            left = $("a.current.reference.internal").position().left-1;
+            width = $("a.current.reference.internal").width();
+            right = sidebarWidth - (left + width + offset);
+            $("a.current.reference.internal").css({"float":"right","backgroundColor":"#0F2939","paddingTop":"2px", "paddingBottom":"2px","paddingLeft":left+"px","marginLeft":"-"+left+"px", "paddingRight":right+"px","marginRight":"-"+right+"px", "boxShadow":"0px 0px 1px rgb(15, 41, 57)"});
+        }
+        $("a.current.reference.internal").parent().css("list-style-type","none");
+    }
+
+    //back to top
+    var offset = 300,
+    //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
+    offset_opacity = 1200,
+    //duration of the top scrolling animation (in ms)
+    scroll_top_duration = 700;
+    //grab the "back to top" link
+    var back_to_top = $('.cd-top');
+
+    //hide or show the "back to top" link
+    $(window).scroll(function(){
+        //back to top button
+        ( $(this).scrollTop() > offset ) ? back_to_top.addClass('cd-is-visible') : back_to_top.removeClass('cd-is-visible cd-fade-out');
+        if( $(this).scrollTop() > offset_opacity ) {
+            back_to_top.addClass('cd-fade-out');
+        }
+    });
+
+    //smooth scroll to top
+    back_to_top.click(function(event){
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0 ,
+        }, scroll_top_duration
+        );
+    });
+    //add show source button
+
+    //replace "go" with "search"
+    $("#searchbox form input[type=submit]").val("Search")
+
+    //trigger click on version triangle to jump to whats new
+    $("#hd").click(function(e){if(e.pageX >= this.offsetWidth && e.pageY<120){$(".whatsnew")[0].click()}})
+})
+
+</script>
+
+
+  </head>
+  <body role="document">
+
+    <div class="document">
+  <div id="custom-doc" class="yui-t3">
+    <div id="hd">
+      
+      <h1><a href="../../index.html">SoftBank Robotics documentation</a>
+      
+      
+      <span><a class="whatsnew" href="../../news/index.html" >
+      
+          What's new in NAOqi 2.8?
+      
+      </a></span>
+      
+      </h1>
+      <div id="global-nav">
+        
+        <a class="naoqi" title="NAOqi Developer guide" href="../../index_dev_guide.html">NAOqi</a>
+        <a class="pepper" title="Pepper documentation" href="../../home_pepper.html">Pepper</a>
+        <a class="nao" title="NAO documentation" href="../../home_nao.html">NAO</a>
+        <a class="romeo" title="Romeo Documentation" href="../../home_romeo.html">Romeo</a>
+        
+        
+        
+        <div class="nav">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script></div>
+      </div>
+
+    </div>
+    <main class="cd-container">
+        <div id="bd">
+          <div id="yui-main">
+            <div class="yui-b">
+              <div class="yui-g" id="naoqi-core-alpreferencemanager-api">
+                
+  <div class="section" id="alpreferencemanager-api">
+<span id="id1"></span><h1>ALPreferenceManager API<a class="headerlink" href="#alpreferencemanager-api" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="index.html#naoqi-core"><span>NAOqi Core</span></a> - <a class="reference internal" href="alpreferencemanager.html#alpreferencemanager"><span>Overview</span></a> | API</p>
+<hr class="docutils" />
+<p>Namespace : <strong>AL</strong></p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;alproxies/alpreferencemanagerproxy.h&gt;</span>
+</pre></div>
+</div>
+<p>ALPreferenceManager allows managing the robot preferences.
+A preference is defined by the tuple:</p>
+<ul>
+<li><p class="first">Domain of the preference (for instance &#8216;com.aldebaran.modules.tts&#8217;, &#8216;com.aldebaran.apps.chess&#8217;, ...)</p>
+</li>
+<li><p class="first">Name of the preference (for instance &#8216;/voice/pitch&#8217;, &#8216;/game/level/default&#8217;, ...)</p>
+</li>
+<li><p class="first">Value of the preference (only string data type is currently supported)</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Domain names are limited to 512 characters.</p>
+<p>Setting names are limited to 512 characters.</p>
+<p class="last">Values are limited to 1 Mega Bytes.</p>
+</div>
+</li>
+</ul>
+<p>These preferences are stored on the robot as well as in the Cloud, where they can also be accessed and modified.</p>
+<div class="section" id="method-list">
+<h2>Method list<a class="headerlink" href="#method-list" title="Permalink to this headline">¶</a></h2>
+<p>As any module, this module inherits methods from <a class="reference internal" href="almodule-api.html#almodule-api"><span>ALModule API</span></a>.
+It also has the following specific methods:</p>
+<dl class="class">
+<dt id="ALPreferenceManager">
+<em class="property">class </em><code class="descname">ALPreferenceManager</code><a class="headerlink" href="#ALPreferenceManager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><a class="reference internal" href="#ALPreferenceManager.getDomainList" title="ALPreferenceManager.getDomainList"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.getDomainList()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.getValues" title="ALPreferenceManager.getValues"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.getValues()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.getValueList" title="ALPreferenceManager.getValueList"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.getValueList()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.getValue" title="ALPreferenceManager.getValue"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.getValue()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.setValue" title="ALPreferenceManager.setValue"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.setValue()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.setValues" title="ALPreferenceManager.setValues"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.setValues()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.removeValue" title="ALPreferenceManager.removeValue"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.removeValue()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.removeDomainValues" title="ALPreferenceManager.removeDomainValues"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.removeDomainValues()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.importPrefFile" title="ALPreferenceManager.importPrefFile"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.importPrefFile()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.update" title="ALPreferenceManager.update"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.update()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="signal-list">
+<h2>Signal list<a class="headerlink" href="#signal-list" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="#ALPreferenceManager.preferenceAdded" title="ALPreferenceManager.preferenceAdded"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.preferenceAdded()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.preferenceDomainRemoved" title="ALPreferenceManager.preferenceDomainRemoved"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.preferenceDomainRemoved()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.preferenceRemoved" title="ALPreferenceManager.preferenceRemoved"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.preferenceRemoved()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.preferenceUpdated" title="ALPreferenceManager.preferenceUpdated"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.preferenceUpdated()</span></code></a></li>
+<li><a class="reference internal" href="#ALPreferenceManager.preferencesSynchronized" title="ALPreferenceManager.preferencesSynchronized"><code class="xref py py-func docutils literal"><span class="pre">ALPreferenceManager.preferencesSynchronized()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="event-list">
+<h2>Event list<a class="headerlink" href="#event-list" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="#preferenceAdded" title="preferenceAdded"><code class="xref naoqi naoqi-event docutils literal"><span class="pre">preferenceAdded()</span></code></a></li>
+<li><a class="reference internal" href="#preferenceChanged" title="preferenceChanged"><code class="xref naoqi naoqi-event docutils literal"><span class="pre">preferenceChanged()</span></code></a></li>
+<li><a class="reference internal" href="#preferenceRemoved" title="preferenceRemoved"><code class="xref naoqi naoqi-event docutils literal"><span class="pre">preferenceRemoved()</span></code></a></li>
+<li><a class="reference internal" href="#preferenceDomainRemoved" title="preferenceDomainRemoved"><code class="xref naoqi naoqi-event docutils literal"><span class="pre">preferenceDomainRemoved()</span></code></a></li>
+<li><a class="reference internal" href="#preferenceSynchronized" title="preferenceSynchronized"><code class="xref naoqi naoqi-event docutils literal"><span class="pre">preferenceSynchronized()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ALPreferenceManager.getDomainList">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">getDomainList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.getDomainList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of all Preferences Domains.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">qi.List(qi.String)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.getValues">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">getValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.getValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all Preferences for all Domains with their values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">qi.List(qi.List(qi.Dynamic))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.getValueList">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">getValueList</code><span class="sig-paren">(</span><em>qi.String</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.getValueList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all Preferences for a Domain with its values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> &#8211; Preference Domain</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">qi.List(qi.List(qi.Dynamic))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.getValue">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">getValue</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.getValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Preference Value for a Domain and Setting.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Return None / null if the Preference doesn&#8217;t exist.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain</strong> &#8211; Preference Domain</li>
+<li><strong>setting</strong> &#8211; Preference Setting</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">qi.Dynamic</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.setValue">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">setValue</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em>, <em>qi.Dynamic</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.setValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a Preference Value for a Domain and Setting.</p>
+<p>If successful, will try to synchronize it with the Cloud directly.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only String values are processed, other types are ignored.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain</strong> &#8211; Preference Domain (Max 512 Bytes)</li>
+<li><strong>setting</strong> &#8211; Preference Setting (Max 512 Bytes)</li>
+<li><strong>value</strong> &#8211; New Preference Value (Max 1 Mega Bytes)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">qi.Void</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.setValues">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">setValues</code><span class="sig-paren">(</span><em>qi.Map(qi.String</em>, <em>qi.Map(qi.String</em>, <em>qi.Dynamic))</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.setValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a list of Preference Domain, Setting and Values.</p>
+<p>If successful, will try to synchronize them with the Cloud directly.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Only String values are processed, other types are ignored.</p>
+<p class="last">Domain and Setting are limited to 512 Bytes and Value is limited to 1 Mega Byte</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> &#8211; New Preference Values (ex: {&#8216;PrefDomain&#8217;: {&#8216;PrefSetting&#8217;: &#8216;StringValue&#8217;}})</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">qi.Void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.removeValue">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">removeValue</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.removeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a Preference.</p>
+<p>If successful, will try to synchronize it with the Cloud directly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain</strong> &#8211; Preference Domain</li>
+<li><strong>setting</strong> &#8211; Preference Setting</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">qi.Void</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.removeDomainValues">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">removeDomainValues</code><span class="sig-paren">(</span><em>qi.String</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.removeDomainValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a Preference Domain and all its Settings / Values.</p>
+<p>If successful, will try to synchronize them with the Cloud directly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> &#8211; Preference Domain</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">qi.Void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.importPrefFile">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">importPrefFile</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em>, <em>qi.String</em>, <em>qi.Bool</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.importPrefFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import an old ALPreferences File into ALPreferenceManager.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only String values are processed, other types are ignored.</p>
+</div>
+<p>Ex: qicli call ALPreferenceManager.importPrefFile &#8220;motion&#8221; &#8220;naoqi&#8221; &#8220;ALMotion.xml&#8221; 1</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain</strong> &#8211; Domain for the new Preferences (Max 512 Bytes)</li>
+<li><strong>application</strong> &#8211; Application name to search the file (ex: &#8216;naoqi&#8217;)</li>
+<li><strong>filename</strong> &#8211; ALPreference filename</li>
+<li><strong>override</strong> &#8211; Override the values if already exists in ALPreferenceManager</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">qi.Void</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.update">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synchronize Preferences with the Cloud.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">qi.Void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ALPreferenceManager.preferenceAdded">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">preferenceAdded</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em>, <em>qi.Dynamic</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.preferenceAdded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when a Preference has been added locally or remotely.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>domain</strong> &#8211; Domain of the Preference (Max 512 Bytes)</li>
+<li><strong>setting</strong> &#8211; Setting of the Preference (Max 512 Bytes)</li>
+<li><strong>value</strong> &#8211; Value of the Preference (Max 1 Mega Bytes)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.preferenceDomainRemoved">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">preferenceDomainRemoved</code><span class="sig-paren">(</span><em>qi.String</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.preferenceDomainRemoved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when a Preference Domain has been removed locally.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> &#8211; Domain of the Preference (Max 512 Bytes)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.preferenceRemoved">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">preferenceRemoved</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.preferenceRemoved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when a Preference has been removed locally or remotely.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>domain</strong> &#8211; Domain of the Preference (Max 512 Bytes)</li>
+<li><strong>setting</strong> &#8211; Setting of the Preference (Max 512 Bytes)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.preferenceUpdated">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">preferenceUpdated</code><span class="sig-paren">(</span><em>qi.String</em>, <em>qi.String</em>, <em>qi.Dynamic</em><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.preferenceUpdated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when a Preference has been updated locally or remotely.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>domain</strong> &#8211; Domain of the Preference (Max 512 Bytes)</li>
+<li><strong>setting</strong> &#8211; Setting of the Preference (Max 512 Bytes)</li>
+<li><strong>value</strong> &#8211; Value of the Preference (Max 1 Mega Bytes)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ALPreferenceManager.preferencesSynchronized">
+<code class="descclassname">ALPreferenceManager.</code><code class="descname">preferencesSynchronized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ALPreferenceManager.preferencesSynchronized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when the Preferences have been Synchronized with the Cloud.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<dl class="event">
+<dt id="preferenceAdded">
+<div class="line">Event: <code class="descname">&quot;preferenceAdded&quot;</code></div>
+callback<span class="sig-paren">(</span><a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> eventName</em>, const <a class="reference internal" href="../stdtypes.html#AL::ALValue" title="AL::ALValue">AL::ALValue</a>&amp;<em> id</em>, <a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> subscriberIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#preferenceAdded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a new preference is added to the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>eventName</strong> (<em>std::string</em>) &#8211; &#8220;preferenceAdded&#8221;</li>
+<li><strong>id</strong> &#8211; An array of two values identifying the preference:</li>
+<li><strong>id[0]</strong> &#8211; The preference domain.</li>
+<li><strong>id[1]</strong> &#8211; The preference name.</li>
+<li><strong>subscriberIdentifier</strong> (<em>std::string</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="event">
+<dt id="preferenceChanged">
+<div class="line">Event: <code class="descname">&quot;preferenceChanged&quot;</code></div>
+callback<span class="sig-paren">(</span><a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> eventName</em>, const <a class="reference internal" href="../stdtypes.html#AL::ALValue" title="AL::ALValue">AL::ALValue</a>&amp;<em> id</em>, <a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> subscriberIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#preferenceChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when the value of a preference has been updated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>eventName</strong> (<em>std::string</em>) &#8211; &#8220;preferenceChanged&#8221;</li>
+<li><strong>id</strong> &#8211; An array of two values identifying the preference:</li>
+<li><strong>id[0]</strong> &#8211; The preference domain.</li>
+<li><strong>id[1]</strong> &#8211; The preference name.</li>
+<li><strong>subscriberIdentifier</strong> (<em>std::string</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="event">
+<dt id="preferenceRemoved">
+<div class="line">Event: <code class="descname">&quot;preferenceRemoved&quot;</code></div>
+callback<span class="sig-paren">(</span><a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> eventName</em>, const <a class="reference internal" href="../stdtypes.html#AL::ALValue" title="AL::ALValue">AL::ALValue</a>&amp;<em> id</em>, <a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> subscriberIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#preferenceRemoved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a preference has been removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>eventName</strong> (<em>std::string</em>) &#8211; &#8220;preferenceRemoved&#8221;</li>
+<li><strong>id</strong> &#8211; An array of two values identifying the preference:</li>
+<li><strong>id[0]</strong> &#8211; The preference domain.</li>
+<li><strong>id[1]</strong> &#8211; The preference name.</li>
+<li><strong>subscriberIdentifier</strong> (<em>std::string</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="event">
+<dt id="preferenceDomainRemoved">
+<div class="line">Event: <code class="descname">&quot;preferenceDomainRemoved&quot;</code></div>
+callback<span class="sig-paren">(</span><a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> eventName</em>, const <a class="reference internal" href="../stdtypes.html#AL::ALValue" title="AL::ALValue">AL::ALValue</a>&amp;<em> id</em>, <a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> subscriberIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#preferenceDomainRemoved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when an entire preference domain has been removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>eventName</strong> (<em>std::string</em>) &#8211; &#8220;preferenceDomainRemoved&#8221;</li>
+<li><strong>id</strong> &#8211; The removed domain.</li>
+<li><strong>subscriberIdentifier</strong> (<em>std::string</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="event">
+<dt id="preferenceSynchronized">
+<div class="line">Event: <code class="descname">&quot;preferenceSynchronized&quot;</code></div>
+callback<span class="sig-paren">(</span><a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> eventName</em>, <a class="reference internal" href="../stdtypes.html#ss" title="std::string">std::string</a><em> subscriberIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#preferenceSynchronized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when all preferences have been synchronized from the cloud.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+            </div>
+          </div>
+          
+            
+              <div class="yui-b" id="sidebar">
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contents.html">Site map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">What&#8217;s new</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index_dev_guide.html">NAOqi - Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/creating_applications/index.html">Creating an application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/life/index.html">Programming for a living robot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index_tuto.html">Other tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/choregraphe/index.html">Choregraphe Suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/programming_index.html">SDKs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">NAOqi APIs</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">NAOqi Core</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="albehaviormanager.html">ALBehaviorManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../connectionmanager/index.html">ALConnectionManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="extractors.html">Extractors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../diagnosis/aldiagnosis.html">ALDiagnosis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="alexpressionwatcher.html">ALExpressionWatcher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="alknowledge.html">ALKnowledge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="almemory.html">ALMemory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="almodule.html">ALModule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../notificationmanager/index.html">ALNotificationManager</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="alpreferencemanager.html">ALPreferenceManager</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="">ALPreferenceManager API</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="alresourcemanager.html">ALResourceManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="alsystem.html">ALSystem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aluserinfo.html">ALUserInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="alusersession.html">ALUserSession</a></li>
+<li class="toctree-l4"><a class="reference internal" href="worldrepresentation.html">ALWorldRepresentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="packagemanager.html">PackageManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="servicemanager-api.html">ServiceManager API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allauncher.html">ALLauncher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allogger.html">ALLogger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="alpreferences.html">ALPreferences</a></li>
+<li class="toctree-l4"><a class="reference internal" href="alstore.html">ALStore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="altabletservice.html">ALTabletService</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../emotion/index.html">NAOqi Emotion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interaction/index_interaction.html">NAOqi Interaction engines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../motion/index.html">NAOqi Motion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../audio/index.html">NAOqi Audio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vision/index.html">NAOqi Vision</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../peopleperception/index.html">NAOqi People Perception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensors/index.html">NAOqi Sensors &amp; LEDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lola/lola.html">LoLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stdtypes.html">Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/libqi/index.html">qi Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/index.html">Former NAOqi Framework</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../home_nao.html"><strong>NAO</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../home_pepper.html"><strong>Pepper</strong> - Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../home_romeo.html"><strong>Romeo</strong> - Documentation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/notice.html">Legal notices</a></li>
+</ul>
+
+    <div id="on-this-page" style="display:none;">
+        <h2 id="otp-link">On this page</h2>
+        <div id="toc-list">
+            <ul>
+<li><a class="reference internal" href="#">ALPreferenceManager API</a><ul>
+<li><a class="reference internal" href="#method-list">Method list</a></li>
+<li><a class="reference internal" href="#signal-list">Signal list</a></li>
+<li><a class="reference internal" href="#event-list">Event list</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#events">Events</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+        </div>
+      </div>
+              </div>
+            
+          
+        </div>
+    </main>
+    <a href="#0" class="cd-top"></a>
+    <div id="ft">
+      
+      <a title="Glossary" href="../../glossary.html">Glossary</a>
+      <a title="Site map" href="../../contents.html">Site map</a>
+      <a title="Index" href="../../genindex.html">Index</a>
+      <a title="Support" target="_blank" href="https://account.aldebaran.com/support/">Support</a>
+      <a title="Contact" target="_blank" href="https://www.aldebaran.com/en/contact">Contact</a>
+      <a title="Legal Notices" href="../../legal/notice.html">Legal Notices</a>
+      
+      
+      <img src="https://www.ald.softbankrobotics.com/sites/aldebaran/files/logos-picture/2016_digital_logo_sbr_112x31_0.png" alt="">
+    </div>
+  </div>
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

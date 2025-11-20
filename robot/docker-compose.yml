@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  jl-pynaoqi:
+    build: .
+    container_name: jl-pynaoqi-dev
+    ports:
+      - "9000:9000"            # WebSocket port
+    volumes:
+      - ./src:/pynaoqi-server   # Mount to container
+      - ./naoqi-sdk:/opt/naoqi-sdk
+      - ./pynaoqi-sdk:/opt/pynaoqi-sdk
+    tty: true                   # Keep container running for interactive use
