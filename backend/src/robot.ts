@@ -1,8 +1,10 @@
 export default class Robot {
     ws: WebSocket | null = null;
+    robot_ip: string;
 
-    constructor(url: string) {
+    constructor(url: string, robot_ip: string = "192.168.2.196") {
         this.ws = new WebSocket(url);
+        this.robot_ip = robot_ip
 
         this.ws.onopen = () => {
             console.log("WebSocket connection opened");
@@ -25,7 +27,13 @@ export default class Robot {
     say(message: string) {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             console.log(`Sending message to robot: ${message}`);
-            this.ws.send(JSON.stringify({ type: "say", message }));
+            this.ws.send(JSON.stringify({
+                type: "method",
+                robot: this.robot_ip,
+                service: "ALTextToSpeech",
+                method: "say",
+                args: [message]
+            }));
         } else {
             console.error("WebSocket is not open. Cannot send message.");
         }
