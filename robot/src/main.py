@@ -1,9 +1,31 @@
+import time
+import os
+
+print "/opt"
+print os.path.exists("/opt")
+print "/opt/pynaoqi-sdk"
+print os.path.exists("/opt/pynaoqi-sdk")
+print "/opt/pynaoqi-sdk/lib"
+print os.path.exists("/opt/pynaoqi-sdk/lib")
+print "/opt/pynaoqi-sdk/lib/python2.7"
+print os.path.exists("/opt/pynaoqi-sdk/lib/python2.7")
+print "/opt/pynaoqi-sdk/lib/python2.7/site-packages"
+print os.path.exists("/opt/pynaoqi-sdk/lib/python2.7/site-packages")
+print "/opt/pynaoqi-sdk/lib/python2.7/site-packages/_qi.so"
+print os.path.exists("/opt/pynaoqi-sdk/lib/python2.7/site-packages/_qi.so")
+print os.listdir("/opt/pynaoqi-sdk/lib/python2.7/site-packages/")
+
+
+# time.sleep(60)
+
 # main.py
 import threading
 
 from server import WebsocketServer
 import json
 import qi
+
+exit(0)
 
 robots = {}
 
